@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kestq - Creative Developer & Game Designer</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-content">
+            <div class="loading-logo">K</div>
+            <div class="loading-text">Loading Portfolio...</div>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-text">Kestq</span>
+            </div>
+            <div class="nav-links">
+                <a href="#projects" class="nav-link">Projects</a>
+                <a href="#skills" class="nav-link">Skills</a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="#contact" class="nav-link">Contact</a>
+            </div>
+            <div class="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-bg">
+            <div class="particles" id="particles"></div>
+        </div>
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="hero-title">
+                    <span class="title-line">Creative</span>
+                    <span class="title-line">Developer</span>
+                    <span class="title-line">& Designer</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Crafting immersive experiences through code, design, and innovation.
+                    Specializing in games, web applications, and interactive media.
+                </p>
+                <div class="hero-cta">
+                    <button class="cta-button primary" onclick="scrollToSection('projects')">
+                        <span>View My Work</span>
+                        <i class="fas fa-arrow-down"></i>
+                    </button>
+                    <button class="cta-button secondary" onclick="scrollToSection('about')">
+                        <span>About Me</span>
+                    </button>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="floating-cards">
+                    <div class="card card-1">
+                        <i class="fas fa-code"></i>
+                        <span>Development</span>
+                    </div>
+                    <div class="card card-2">
+                        <i class="fas fa-palette"></i>
+                        <span>Design</span>
+                    </div>
+                    <div class="card card-3">
+                        <i class="fas fa-gamepad"></i>
+                        <span>Games</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <div class="scroll-text">Scroll to explore</div>
+            <div class="scroll-arrow"></div>
+        </div>
+    </section>
+
+    <!-- Portal Section -->
+    <section class="portal-section" id="portal">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Project Portal</h2>
+                <p class="section-subtitle">
+                    Explore my interactive projects and applications
+                </p>
+            </div>
+            <div class="portal-grid">
+                <div class="portal-card featured" onclick="navigateToProject('phasmo-journal')">
+                    <div class="card-background">
+                        <div class="card-gradient"></div>
+                        <div class="card-pattern"></div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-icon">
+                            <i class="fas fa-ghost"></i>
+                        </div>
+                        <h3 class="card-title">Phasmo Journal</h3>
+                        <p class="card-description">
+                            Interactive ghost evidence tracker with 20 themes for the popular game Phasmophobia
+                        </p>
+                        <div class="card-tags">
+                            <span class="tag">React</span>
+                            <span class="tag">Game Tool</span>
+                            <span class="tag">20 Themes</span>
+                        </div>
+                        <div class="card-status">
+                            <span class="status-dot live"></span>
+                            <span>Live Demo</span>
+                        </div>
+                    </div>
+                    <div class="card-hover">
+                        <div class="hover-content">
+                            <span>Launch Project</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="portal-card coming-soon" onclick="showComingSoon('project-2')">
+                    <div class="card-background">
+                        <div class="card-gradient"></div>
+                        <div class="card-pattern"></div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-icon">
+                            <i class="fas fa-flask"></i>
+                        </div>
+                        <h3 class="card-title">Interactive Lab</h3>
+                        <p class="card-description">
+                            Educational science simulations and interactive experiments
+                        </p>
+                        <div class="card-tags">
+                            <span class="tag">WebGL</span>
+                            <span class="tag">Physics</span>
+                            <span class="tag">3D</span>
+                        </div>
+                        <div class="card-status">
+                            <span class="status-dot coming"></span>
+                            <span>Coming Soon</span>
+                        </div>
+                    </div>
+                    <div class="card-hover">
+                        <div class="hover-content">
+                            <span>Learn More</span>
+                            <i class="fas fa-clock"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="portal-card coming-soon" onclick="showComingSoon('project-3')">
+                    <div class="card-background">
+                        <div class="card-gradient"></div>
+                        <div class="card-pattern"></div>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-icon">
+                            <i class="fas fa-cube"></i>
+                        </div>
+                        <h3 class="card-title">3D Playground</h3>
+                        <p class="card-description">
+                            Interactive 3D environments and procedural generation experiments
+                        </p>
+                        <div class="card-tags">
+                            <span class="tag">Three.js</span>
+                            <span class="tag">Procedural</span>
+                            <span class="tag">WebXR</span>
+                        </div>
+                        <div class="card-status">
+                            <span class="status-dot coming"></span>
+                            <span>Coming Soon</span>
+                        </div>
+                    </div>
+                    <div class="card-hover">
+                        <div class="hover-content">
+                            <span>Learn More</span>
+                            <i class="fas fa-clock"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section class="skills-section" id="skills">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Skills & Technologies</h2>
+                <p class="section-subtitle">
+                    The tools and technologies I use to bring ideas to life
+                </p>
+            </div>
+            
+            <div class="skills-grid">
+                <!-- Programming Languages -->
+                <div class="skill-category">
+                    <div class="category-header">
+                        <i class="fas fa-code"></i>
+                        <h3>Programming Languages</h3>
+                    </div>
+                    <div class="skill-items">
+                        <div class="skill-item">
+                            <div class="skill-icon">
+                                <i class="fab fa-js-square"></i>
+                            </div>
+                            <span>JavaScript</span>
+                            <div class="skill-level">
+                                <div class="skill-bar" data-level="90"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-icon">
+                                <i class="fab fa-python"></i>
+                            </div>
+                            <span>Python</span>
+                            <div class="skill-level">
+                                <div class="skill-bar" data-level="85"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-icon">
+                                <i class="fab fa-java"></i>
+                            </div>
+                            <span>Java</span>
+                            <div class="skill-level">
+                                <div class="skill-bar" data-level="75"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-icon">
+                                <i class="fab fa-cuttlefish"></i>
+                            </div>
+                            <span>C#</span>
+                            <div class="skill-level">
+                                <div class="skill-bar" data-level="80"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-icon">
+                                <i class="fab fa-cpp"></i>
+                            </div>
+                            <span>C++</span>
+                            <div class="skill-level">
+                                <div class="skill-bar" data-level="70"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-icon">
+                                <i class="fab fa-html5"></i>
+                            </div>
+                            <span>HTML/CSS</span>
+                            <div class="skill-level">
+                                <div class="skill-bar" data-level="95"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-icon">
+                                <i class="fab fa-php"></i>
+                            </div>
+                            <span>PHP</span>
+                            <div class="skill-level">
+                                <div class="skill-bar" data-level="65"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-icon">
+                                <i class="fab fa-sql"></i>
+                            </div>
+                            <span>SQL</span>
+                            <div class="skill-level">
+                                <div class="skill-bar" data-level="80"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Development Tools -->
+                <div class="skill-category">
+                    <div class="category-header">
+                        <i class="fas fa-tools"></i>
+                        <h3>Development Tools</h3>
+                    </div>
+                    <div class="skill-items">
+                        <div class="skill-item">
+                            <div class="skill-icon">
+                                <i class="fab fa-react"></i>
+                            </div>
+                            <span>React/Next.js</span>
+                            <div class="skill-level">
+                                <div class="skill-bar" data-level="90"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-icon">
+                                <i class="fab fa-node-js"></i>
+                            </div>
+                            <span>Node.js</span>
+                            <div class="skill-level">
+                                <div class="skill-bar" data-level="85"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-icon">
+                                <i class="fab fa-unity"></i>
+                            </div>
+                            <span>Unity</span>
+                            <div class="skill-level">
+                                <div class="skill-bar" data-level="88"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-icon">
+                                <i class="fas fa-cube"></i>
+                            </div>
+                            <span>Three.js</span>
+                            <div class="skill-level">
+                                <div class="skill-bar" data-level="75"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-icon">
+                                <i class="fab fa-git-alt"></i>
+                            </div>
+                            <span>Git/GitHub</span>
+                            <div class="skill-level">
+                                <div class="skill-bar" data-level="92"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-icon">
+                                <i class="fas fa-database"></i>
+                            </div>
+                            <span>PostgreSQL</span>
+                            <div class="skill-level">
+                                <div class="skill-bar" data-level="78"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-icon">
+                                <i class="fab fa-docker"></i>
+                            </div>
+                            <span>Docker</span>
+                            <div class="skill-level">
+                                <div class="skill-bar" data-level="70"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-icon">
+                                <i class="fab fa-aws"></i>
+                            </div>
+                            <span>AWS</span>
+                            <div class="skill-level">
+                                <div class="skill-bar" data-level="65"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Creative Software -->
+                <div class="skill-category">
+                    <div class="category-header">
+                        <i class="fas fa-palette"></i>
+                        <h3>Creative Software</h3>
+                    </div>
+                    <div class="skill-items">
+                        <div class="skill-item">
+                            <div class="skill-icon">
+                                <i class="fas fa-paint-brush"></i>
+                            </div>
+                            <span>Photoshop</span>
+                            <div class="skill-level">
+                                <div class="skill-bar" data-level="85"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-icon">
+                                <i class="fas fa-vector-square"></i>
+                            </div>
+                            <span>Illustrator</span>
+                            <div class="skill-level">
+                                <div class="skill-bar" data-level="80"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-icon">
+                                <i class="fas fa-video"></i>
+                            </div>
+                            <span>Premiere Pro</span>
+                            <div class="skill-level">
+                                <div class="skill-bar" data-level="88"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-icon">
+                                <i class="fas fa-film"></i>
+                            </div>
+                            <span>After Effects</span>
+                            <div class="skill-level">
+                                <div class="skill-bar" data-level="82"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-icon">
+                                <i class="fas fa-cube"></i>
+                            </div>
+                            <span>Blender</span>
+                            <div class="skill-level">
+                                <div class="skill-bar" data-level="75"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-icon">
+                                <i class="fas fa-cube"></i>
+                            </div>
+                            <span>Maya</span>
+                            <div class="skill-level">
+                                <div class="skill-bar" data-level="70"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-icon">
+                                <i class="fas fa-cube"></i>
+                            </div>
+                            <span>3ds Max</span>
+                            <div class="skill-level">
+                                <div class="skill-bar" data-level="68"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-icon">
+                                <i class="fas fa-cube"></i>
+                            </div>
+                            <span>ZBrush</span>
+                            <div class="skill-level">
+                                <div class="skill-bar" data-level="65"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="projects-section" id="projects">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Recent Projects</h2>
+                <p class="section-subtitle">
+                    A showcase of my latest work and achievements
+                </p>
+            </div>
+            
+            <div class="projects-grid">
+                <div class="project-card featured-project">
+                    <div class="project-image">
+                        <div class="project-overlay">
+                            <div class="project-links">
+                                <a href="#" class="project-link">
+                                    <i class="fas fa-external-link-alt"></i>
+                                </a>
+                                <a href="#" class="project-link">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3>Phasmo Journal</h3>
+                        <p>A comprehensive ghost evidence tracking tool for Phasmophobia players, featuring 20 custom themes and an intuitive interface.</p>
+                        <div class="project-tech">
+                            <span>React</span>
+                            <span>TypeScript</span>
+                            <span>CSS3</span>
+                            <span>GitHub Pages</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-image">
+                        <div class="project-placeholder">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <div class="project-overlay">
+                            <div class="project-links">
+                                <a href="#" class="project-link">
+                                    <i class="fas fa-external-link-alt"></i>
+                                </a>
+                                <a href="#" class="project-link">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3>3D Portfolio Website</h3>
+                        <p>Interactive 3D portfolio with WebGL animations and immersive navigation.</p>
+                        <div class="project-tech">
+                            <span>Three.js</span>
+                            <span>WebGL</span>
+                            <span>GSAP</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-image">
+                        <div class="project-placeholder">
+                            <i class="fas fa-gamepad"></i>
+                        </div>
+                        <div class="project-overlay">
+                            <div class="project-links">
+                                <a href="#" class="project-link">
+                                    <i class="fas fa-external-link-alt"></i>
+                                </a>
+                                <a href="#" class="project-link">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3>Indie Game Project</h3>
+                        <p>2D puzzle-platformer game developed in Unity with procedural level generation.</p>
+                        <div class="project-tech">
+                            <span>Unity</span>
+                            <span>C#</span>
+                            <span>Photoshop</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-image">
+                        <div class="project-placeholder">
+                            <i class="fas fa-video"></i>
+                        </div>
+                        <div class="project-overlay">
+                            <div class="project-links">
+                                <a href="#" class="project-link">
+                                    <i class="fas fa-external-link-alt"></i>
+                                </a>
+                                <a href="#" class="project-link">
+                                    <i class="fab fa-github"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3>Motion Graphics Suite</h3>
+                        <p>Custom After Effects plugin for efficient motion graphics workflows.</p>
+                        <div class="project-tech">
+                            <span>After Effects</span>
+                            <span>ExtendScript</span>
+                            <span>JavaScript</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section" id="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>About Me</h2>
+                    <p class="about-intro">
+                        I'm a passionate creative developer who bridges the gap between technology and art. 
+                        With experience spanning game development, web applications, graphic design, and 3D modeling, 
+                        I bring a unique perspective to every project.
+                    </p>
+                    <div class="about-details">
+                        <div class="detail-item">
+                            <i class="fas fa-graduation-cap"></i>
+                            <span>Self-taught with continuous learning</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-users"></i>
+                            <span>Collaborative team player</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-lightbulb"></i>
+                            <span>Innovation-driven problem solver</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-rocket"></i>
+                            <span>Rapid prototyping specialist</span>
+                        </div>
+                    </div>
+                    <div class="about-cta">
+                        <button class="cta-button primary" onclick="scrollToSection('contact')">
+                            <span>Get In Touch</span>
+                            <i class="fas fa-envelope"></i>
+                        </button>
+                        <button class="cta-button secondary" onclick="downloadResume()">
+                            <span>Download Resume</span>
+                            <i class="fas fa-download"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="about-visual">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number" data-target="50">0</div>
+                            <div class="stat-label">Projects Completed</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" data-target="3">0</div>
+                            <div class="stat-label">Years Experience</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" data-target="15">0</div>
+                            <div class="stat-label">Technologies Mastered</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" data-target="100">0</div>
+                            <div class="stat-label">Hours Monthly</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section" id="contact">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Let's Work Together</h2>
+                <p class="section-subtitle">
+                    Ready to bring your ideas to life? Let's discuss your next project.
+                </p>
+            </div>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h4>Email</h4>
+                            <p>hello@kestq.dev</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fab fa-github"></i>
+                        <div>
+                            <h4>GitHub</h4>
+                            <p>@kestq</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fab fa-linkedin"></i>
+                        <div>
+                            <h4>LinkedIn</h4>
+                            <p>/in/kestq</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fab fa-twitter"></i>
+                        <div>
+                            <h4>Twitter</h4>
+                            <p>@kestq_dev</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-form">
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <input type="text" id="name" name="name" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="email" name="email" placeholder="Your Email" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="subject" name="subject" placeholder="Subject" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="message" name="message" placeholder="Your Message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="cta-button primary">
+                            <span>Send Message</span>
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-text">
+                    <p>&copy; 2024 Kestq. All rights reserved.</p>
+                </div>
+                <div class="footer-links">
+                    <a href="#" class="footer-link">Privacy Policy</a>
+                    <a href="#" class="footer-link">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Coming Soon Modal -->
+    <div class="modal" id="comingSoonModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Project Coming Soon</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="coming-soon-content">
+                    <div class="coming-soon-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <p id="modalDescription">
+                        This project is currently in development. Stay tuned for updates!
+                    </p>
+                    <div class="coming-soon-features">
+                        <h4>Planned Features:</h4>
+                        <ul id="modalFeatures">
+                            <!-- Features will be populated by JavaScript -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
