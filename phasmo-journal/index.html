@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phasmo Journal - Ghost Evidence Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <a href="#" class="nav-link active" data-page="journal">Journal</a>
+                <a href="#" class="nav-link" data-page="maps">Maps</a>
+                <a href="#" class="nav-link" data-page="difficulty">Difficulty Maker</a>
+            </div>
+            <div class="nav-center">
+                <h1 class="logo">PHASMO JOURNAL</h1>
+            </div>
+            <div class="nav-right">
+                <div class="theme-selector">
+                    <button class="theme-btn" id="themeBtn">
+                        <span class="theme-preview" id="themePreview"></span>
+                        Theme
+                        <svg class="chevron" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div class="theme-dropdown" id="themeDropdown">
+                        <div class="theme-option" data-theme="default-dark">
+                            <div class="theme-colors">
+                                <div class="color-dot" style="background: #ffffff;"></div>
+                                <div class="color-dot" style="background: #1a1a1a;"></div>
+                                <div class="color-dot" style="background: #333333;"></div>
+                            </div>
+                            <span>Default Dark</span>
+                        </div>
+                        <div class="theme-option" data-theme="default-light">
+                            <div class="theme-colors">
+                                <div class="color-dot" style="background: #333333;"></div>
+                                <div class="color-dot" style="background: #ffffff;"></div>
+                                <div class="color-dot" style="background: #f5f5f5;"></div>
+                            </div>
+                            <span>Default Light</span>
+                        </div>
+                        <div class="theme-option" data-theme="purple-aurora">
+                            <div class="theme-colors">
+                                <div class="color-dot" style="background: #a855f7;"></div>
+                                <div class="color-dot" style="background: #1a1030;"></div>
+                                <div class="color-dot" style="background: #4c1d95;"></div>
+                            </div>
+                            <span>Purple Aurora</span>
+                        </div>
+                        <div class="theme-option" data-theme="blue-sunset">
+                            <div class="theme-colors">
+                                <div class="color-dot" style="background: #3b82f6;"></div>
+                                <div class="color-dot" style="background: #0f172a;"></div>
+                                <div class="color-dot" style="background: #1e40af;"></div>
+                            </div>
+                            <span>Blue Sunset</span>
+                        </div>
+                        <div class="theme-option" data-theme="green-forest">
+                            <div class="theme-colors">
+                                <div class="color-dot" style="background: #22c55e;"></div>
+                                <div class="color-dot" style="background: #052e16;"></div>
+                                <div class="color-dot" style="background: #166534;"></div>
+                            </div>
+                            <span>Green Forest</span>
+                        </div>
+                        <div class="theme-option" data-theme="red-crimson">
+                            <div class="theme-colors">
+                                <div class="color-dot" style="background: #ef4444;"></div>
+                                <div class="color-dot" style="background: #1f0a0a;"></div>
+                                <div class="color-dot" style="background: #7f1d1d;"></div>
+                            </div>
+                            <span>Red Crimson</span>
+                        </div>
+                        <div class="theme-option" data-theme="orange-sunset">
+                            <div class="theme-colors">
+                                <div class="color-dot" style="background: #f97316;"></div>
+                                <div class="color-dot" style="background: #1f1308;"></div>
+                                <div class="color-dot" style="background: #9a3412;"></div>
+                            </div>
+                            <span>Orange Sunset</span>
+                        </div>
+                        <div class="theme-option" data-theme="pink-rose">
+                            <div class="theme-colors">
+                                <div class="color-dot" style="background: #ec4899;"></div>
+                                <div class="color-dot" style="background: #1f0f1f;"></div>
+                                <div class="color-dot" style="background: #be185d;"></div>
+                            </div>
+                            <span>Pink Rose</span>
+                        </div>
+                        <div class="theme-option" data-theme="teal-ocean">
+                            <div class="theme-colors">
+                                <div class="color-dot" style="background: #14b8a6;"></div>
+                                <div class="color-dot" style="background: #042a2b;"></div>
+                                <div class="color-dot" style="background: #0f766e;"></div>
+                            </div>
+                            <span>Teal Ocean</span>
+                        </div>
+                        <div class="theme-option" data-theme="indigo-dream">
+                            <div class="theme-colors">
+                                <div class="color-dot" style="background: #6366f1;"></div>
+                                <div class="color-dot" style="background: #0f0a1a;"></div>
+                                <div class="color-dot" style="background: #3730a3;"></div>
+                            </div>
+                            <span>Indigo Dream</span>
+                        </div>
+                        <div class="theme-option" data-theme="emerald-forest">
+                            <div class="theme-colors">
+                                <div class="color-dot" style="background: #10b981;"></div>
+                                <div class="color-dot" style="background: #052e1a;"></div>
+                                <div class="color-dot" style="background: #065f46;"></div>
+                            </div>
+                            <span>Emerald Forest</span>
+                        </div>
+                        <div class="theme-option" data-theme="amber-gold">
+                            <div class="theme-colors">
+                                <div class="color-dot" style="background: #f59e0b;"></div>
+                                <div class="color-dot" style="background: #1a1305;"></div>
+                                <div class="color-dot" style="background: #92400e;"></div>
+                            </div>
+                            <span>Amber Gold</span>
+                        </div>
+                        <div class="theme-option" data-theme="violet-magic">
+                            <div class="theme-colors">
+                                <div class="color-dot" style="background: #8b5cf6;"></div>
+                                <div class="color-dot" style="background: #1a0f2e;"></div>
+                                <div class="color-dot" style="background: #5b21b6;"></div>
+                            </div>
+                            <span>Violet Magic</span>
+                        </div>
+                        <div class="theme-option" data-theme="cyan-electric">
+                            <div class="theme-colors">
+                                <div class="color-dot" style="background: #06b6d4;"></div>
+                                <div class="color-dot" style="background: #062e34;"></div>
+                                <div class="color-dot" style="background: #0891b2;"></div>
+                            </div>
+                            <span>Cyan Electric</span>
+                        </div>
+                        <div class="theme-option" data-theme="rose-gold">
+                            <div class="theme-colors">
+                                <div class="color-dot" style="background: #f43f5e;"></div>
+                                <div class="color-dot" style="background: #1a0a0a;"></div>
+                                <div class="color-dot" style="background: #be123c;"></div>
+                            </div>
+                            <span>Rose Gold</span>
+                        </div>
+                        <div class="theme-option" data-theme="lime-bright">
+                            <div class="theme-colors">
+                                <div class="color-dot" style="background: #84cc16;"></div>
+                                <div class="color-dot" style="background: #141a05;"></div>
+                                <div class="color-dot" style="background: #65a30d;"></div>
+                            </div>
+                            <span>Lime Bright</span>
+                        </div>
+                        <div class="theme-option" data-theme="slate-modern">
+                            <div class="theme-colors">
+                                <div class="color-dot" style="background: #64748b;"></div>
+                                <div class="color-dot" style="background: #0f172a;"></div>
+                                <div class="color-dot" style="background: #334155;"></div>
+                            </div>
+                            <span>Slate Modern</span>
+                        </div>
+                        <div class="theme-option" data-theme="zinc-rain">
+                            <div class="theme-colors">
+                                <div class="color-dot" style="background: #71717a;"></div>
+                                <div class="color-dot" style="background: #18181b;"></div>
+                                <div class="color-dot" style="background: #52525b;"></div>
+                            </div>
+                            <span>Zinc Rain</span>
+                        </div>
+                        <div class="theme-option" data-theme="stone-earth">
+                            <div class="theme-colors">
+                                <div class="color-dot" style="background: #a8a29e;"></div>
+                                <div class="color-dot" style="background: #1c1917;"></div>
+                                <div class="color-dot" style="background: #78716c;"></div>
+                            </div>
+                            <span>Stone Earth</span>
+                        </div>
+                        <div class="theme-option" data-theme="neutral-warm">
+                            <div class="theme-colors">
+                                <div class="color-dot" style="background: #a3a3a3;"></div>
+                                <div class="color-dot" style="background: #262626;"></div>
+                                <div class="color-dot" style="background: #737373;"></div>
+                            </div>
+                            <span>Neutral Warm</span>
+                        </div>
+                        <div class="theme-option" data-theme="mauve-delicate">
+                            <div class="theme-colors">
+                                <div class="color-dot" style="background: #a855a8;"></div>
+                                <div class="color-dot" style="background: #2d1b2d;"></div>
+                                <div class="color-dot" style="background: #8b5cf6;"></div>
+                            </div>
+                            <span>Mauve Delicate</span>
+                        </div>
+                    </div>
+                </div>
+                <a href="#" class="nav-link" data-page="twitch">Twitch</a>
+                <a href="#" class="nav-link" data-page="discord">Discord</a>
+                <a href="#" class="nav-link" data-page="news">News</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-toggle">
+            <button class="mode-btn active" data-mode="filters">Filters</button>
+            <button class="mode-btn" data-mode="tools">Tools</button>
+        </div>
+
+        <div class="sidebar-content" id="filtersMode">
+            <!-- Difficulty Dropdown -->
+            <div class="filter-group">
+                <label class="filter-label">Difficulty</label>
+                <select id="difficultySelect" class="filter-select">
+                    <option value="Amateur">Amateur (3 Evidence)</option>
+                    <option value="Intermediate">Intermediate (3 Evidence)</option>
+                    <option value="Professional">Professional (3 Evidence)</option>
+                    <option value="Nightmare">Nightmare (2 Evidence)</option>
+                    <option value="Insanity">Insanity (1 Evidence)</option>
+                </select>
+            </div>
+
+            <!-- Evidence Selection -->
+            <div class="filter-group">
+                <label class="filter-label">Evidence (Click to cycle)</label>
+                <div class="evidence-grid" id="evidenceGrid">
+                    <!-- Evidence buttons will be populated by JavaScript -->
+                </div>
+                <div class="evidence-limit" id="evidenceLimit"></div>
+            </div>
+
+            <!-- Speed Sort -->
+            <div class="filter-group">
+                <label class="filter-label">Speed Sort</label>
+                <div class="speed-grid">
+                    <button class="speed-btn" data-speed="slow">Slow</button>
+                    <button class="speed-btn" data-speed="normal">Normal</button>
+                    <button class="speed-btn" data-speed="fast">Fast</button>
+                </div>
+            </div>
+
+            <!-- Hunt Sanity Filter -->
+            <div class="filter-group">
+                <label class="filter-label">Hunt Sanity</label>
+                <div class="hunt-grid">
+                    <button class="hunt-btn active" data-hunt="all">All</button>
+                    <button class="hunt-btn" data-hunt="late">Late <40%</button>
+                    <button class="hunt-btn" data-hunt="normal">Normal >40%</button>
+                    <button class="hunt-btn" data-hunt="early">Early >50%</button>
+                    <button class="hunt-btn" data-hunt="very-early">Very Early >75%</button>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="filter-group">
+                <div class="actions-grid">
+                    <button id="clearBtn" class="action-btn clear">🗑️ Clear</button>
+                    <button id="resetBtn" class="action-btn reset">🔄 Reset</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="sidebar-content hidden" id="toolsMode">
+            <!-- Timers -->
+            <div class="filter-group">
+                <label class="filter-label">Timers</label>
+                <div class="timers-grid">
+                    <button class="timer-btn" data-timer="sanity">🧠 Sanity Timer</button>
+                    <button class="timer-btn" data-timer="hunt">👻 Hunt Timer</button>
+                    <button class="timer-btn" data-timer="smudge">💨 Smudge Timer</button>
+                </div>
+            </div>
+
+            <!-- Speed Scaler -->
+            <div class="filter-group">
+                <label class="filter-label">Speed Scaler</label>
+                <div class="speed-info">
+                    <div class="speed-current" id="speedCurrent"></div>
+                    <div class="speed-details" id="speedDetails"></div>
+                </div>
+            </div>
+
+            <!-- BPM Finder -->
+            <div class="filter-group">
+                <label class="filter-label">BPM Finder</label>
+                <div class="bpm-container">
+                    <div class="bpm-input-group">
+                        <span>BPM:</span>
+                        <input type="number" id="bpmInput" value="120" min="60" max="200">
+                    </div>
+                    <div class="bpm-result" id="bpmResult"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="sidebar-stats">
+            <div class="stat-item">
+                <div class="stat-label">Ghosts</div>
+                <div class="stat-value" id="statGhosts">0</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Confirm</div>
+                <div class="stat-value" id="statConfirm">0</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Evidence</div>
+                <div class="stat-value" id="statEvidence">0/3</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="stats-header" id="statsHeader">
+            <h2 class="stats-title">
+                <span>👻</span>
+                Possible Ghosts
+                <span class="stats-count" id="statsCount">0/27</span>
+            </h2>
+            <div class="selected-evidence" id="selectedEvidence">
+                <!-- Selected evidence badges will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <div class="ghosts-container" id="ghostsContainer">
+            <!-- Ghost cards will be populated by JavaScript -->
+        </div>
+    </div>
+
+    <!-- Ghost Modal -->
+    <div class="modal hidden" id="ghostModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle"></h2>
+                <button class="modal-close" id="modalClose">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Ghost details will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
