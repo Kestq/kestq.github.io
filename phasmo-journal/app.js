@@ -188,16 +188,19 @@ function createGhostCard(ghost) {
         <div class="ghost-content">
             <div class="ghost-left">
                 <div class="ghost-header">
-                    <h3 class="ghost-name">${ghost.name}</h3>
+                    <h3 class="ghost-name clickable" data-ghost="${ghost.id}">${ghost.name}</h3>
                     <span class="ghost-difficulty">${matchScore.score}% match</span>
                 </div>
                 <div class="ghost-evidences">
-                    ${ghost.evidences.map(evidence => `
-                        <span class="evidence-tag">
-                            <img src="ASSETS/svg/${EVIDENCE_ICONS[evidence] || 'file.svg'}" alt="" class="evidence-icon">
-                            <span>${evidence}</span>
-                        </span>
-                    `).join('')}
+                    ${ghost.evidences.map(evidence => {
+                        const iconClass = evidence.toLowerCase().replace(/[.\s]/g, '');
+                        return `
+                            <span class="evidence-tag">
+                                <img src="ASSETS/svg/${EVIDENCE_ICONS[evidence] || 'file.svg'}" alt="" class="evidence-icon ${iconClass}">
+                                <span>${evidence}</span>
+                            </span>
+                        `;
+                    }).join('')}
                 </div>
                 <div class="ghost-stats">
                     <span class="speed-display">
@@ -206,29 +209,29 @@ function createGhostCard(ghost) {
                             🔊
                         </button>
                     </span>
-                    <span>${ghost.huntThreshold || '50%'}</span>
+                    <span>${ghost.huntThreshold || '50%'} sanity</span>
                 </div>
                 <div class="ghost-actions">
-                    <button class="action-confirm" data-ghost="${ghost.id}">✓ Confirm</button>
-                    <button class="action-exclude" data-ghost="${ghost.id}">✕ Exclude</button>
+                    <button class="action-confirm" data-ghost="${ghost.id}">✓</button>
+                    <button class="action-exclude" data-ghost="${ghost.id}">✕</button>
                 </div>
             </div>
             <div class="ghost-right">
                 <div class="ghost-details-scroll">
-                    ${ghost.strengths && ghost.strengths.length > 0 && ghost.strengths[0] !== "None" ? `
+                    ${ghost.tells && ghost.tells.length > 0 ? `
                         <div class="detail-section">
-                            <h4>Strengths</h4>
+                            <h4>Tells</h4>
                             <ul>
-                                ${ghost.strengths.map(strength => `<li>${strength}</li>`).join('')}
+                                ${ghost.tells.map(tell => `<li>${tell}</li>`).join('')}
                             </ul>
                         </div>
                     ` : ''}
                     
-                    ${ghost.weaknesses && ghost.weaknesses.length > 0 ? `
+                    ${ghost.behaviors && ghost.behaviors.length > 0 ? `
                         <div class="detail-section">
-                            <h4>Weaknesses</h4>
+                            <h4>Behaviors</h4>
                             <ul>
-                                ${ghost.weaknesses.map(weakness => `<li>${weakness}</li>`).join('')}
+                                ${ghost.behaviors.map(behavior => `<li>${behavior}</li>`).join('')}
                             </ul>
                         </div>
                     ` : ''}
@@ -242,35 +245,50 @@ function createGhostCard(ghost) {
                         </div>
                     ` : ''}
                     
-                    ${ghost.tests && ghost.tests.length > 0 ? `
+                    ${ghost.huntSpeed ? `
                         <div class="detail-section">
-                            <h4>Tests</h4>
+                            <h4>Hunt Speed</h4>
+                            <div class="hunt-speed-display">
+                                <div class="speed-preview">
+                                    <span>${ghost.huntSpeed}</span>
+                                    <button class="speed-preview-btn" data-ghost="${ghost.id}" data-speed-file="${getSpeedAudioFile(ghost.huntSpeed)}" title="Preview Hunt Speed Sound">
+                                        🔊
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    ` : ''}
+                    
+                    ${ghost.guaranteedEvidence && ghost.guaranteedEvidence.length > 0 ? `
+                        <div class="detail-section">
+                            <h4>Guaranteed Evidence</h4>
                             <ul>
-                                ${ghost.tests.map(test => `<li>${test}</li>`).join('')}
+                                ${ghost.guaranteedEvidence.map(evidence => `<li>${evidence}</li>`).join('')}
                             </ul>
                         </div>
                     ` : ''}
-                    
-                    ${ghost.notes ? `
-                        <div class="detail-section">
-                            <h4>Notes</h4>
-                            <p>${ghost.notes}</p>
-                        </div>
-                    ` : ''}
-                    
-                    <div class="detail-section">
-                        <h4>Meta</h4>
-                        <div class="meta-grid">
-                            <div><strong>Speed:</strong> ${ghost.speed || '1.7 m/s'}</div>
-                            <div><strong>Hunt:</strong> ${ghost.huntThreshold || '50%'}</div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
     `;
     
-    card.addEventListener('click', () => showGhostModal(ghost));
+    card.addEventListener('click', (e) => {
+        // Only open modal when clicking on ghost name
+        if (e.target.classList.contains('ghost-name')) {
+            e.stopPropagation();
+            showGhostModal(ghost);
+        }
+    });
+    
+    // Add data attribute for identification
+    card.dataset.ghost = ghost.id;
+    
+    // Check if ghost is excluded for visual styling
+    if (state.excludedGhosts.has(ghost.id)) {
+        card.classList.add('excluded');
+        card.querySelector('.action-exclude').textContent = '↶';
+        card.querySelector('.action-exclude').title = 'Bring Back';
+    }
     
     // Action buttons
     card.querySelector('.action-confirm').addEventListener('click', (e) => {
