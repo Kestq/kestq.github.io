@@ -152,11 +152,7 @@ function updateEvidenceGrid() {
         button.disabled = maxReached;
         
         button.innerHTML = `
-            <img src="ASSETS/svg/${EVIDENCE_ICONS[evidence] || 'file.svg'}" alt="" class="evidence-icon">
             <span class="flex-1 text-left">${evidence}</span>
-            ${isSelected ? '<span class="text-xs bg-[#059669] px-1.5 py-0.5 rounded">SELECTED</span>' : ''}
-            ${isExcluded ? '<span class="text-xs bg-[#dc2626] px-1.5 py-0.5 rounded">EXCLUDED</span>' : ''}
-            ${maxReached ? '<span class="text-xs text-muted-foreground">MAX</span>' : ''}
         `;
         
         button.addEventListener('click', () => handleEvidenceCycle(evidence));
@@ -195,7 +191,10 @@ function createGhostCard(ghost) {
         </div>
         <div class="ghost-evidences">
             ${ghost.evidences.map(evidence => `
-                <span class="evidence-tag">${evidence}</span>
+                <span class="evidence-tag">
+                    <img src="ASSETS/svg/${EVIDENCE_ICONS[evidence] || 'file.svg'}" alt="" class="evidence-icon">
+                    <span>${evidence}</span>
+                </span>
             `).join('')}
         </div>
         <div class="ghost-stats">
