@@ -1158,19 +1158,20 @@ body {
     }
 }
 
-/* New Ghost Card Design */
+/* New Ghost Card Design - compact, about half the height */
 .ghost-card {
     background: rgba(var(--card), 0.25);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(var(--border), 0.3);
     border-radius: 0.75rem;
-    padding: 1rem;
+    padding: 0.75rem;
     cursor: pointer;
     transition: all 0.2s ease;
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
-    min-height: 280px;
+    gap: 0.5rem;
+    min-height: 140px;      /* ~half of 280px */
+    max-height: 170px;      /* keep them tight */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
@@ -1218,8 +1219,9 @@ body {
 /* Ghost Body - Two Column Layout */
 .ghost-body {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr); /* left > right */
+    gap: 0.75rem;
+    align-items: stretch;
     flex: 1;
 }
 
@@ -1385,10 +1387,9 @@ body {
 
 /* Right Column - Tabs */
 .ghost-right {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 0.75rem;
-    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
 .ghost-tab-buttons {
@@ -1425,10 +1426,13 @@ body {
 }
 
 .ghost-tab-box {
-    background: rgba(var(--muted), 0.1);
-    border: 1px solid rgba(var(--border), 0.2);
+    flex: 1;
+    background: rgba(var(--muted), 0.4);
+    border: 1px solid rgba(var(--border), 0.35);
     border-radius: 0.5rem;
-    padding: 0.75rem;
+    padding: 0.5rem;
+    font-size: 0.7rem;
+    max-height: 110px;       /* keeps card short */
     overflow-y: auto;
 }
 
