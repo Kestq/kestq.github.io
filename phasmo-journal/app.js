@@ -98,7 +98,15 @@ function updateState() {
     let filtered = filterGhostsByEvidences(state.selectedEvidences, Array.from(state.evidenceExcluded));
     filtered = filtered.filter(ghost => !state.excludedGhosts.has(ghost.id));
     
-    state.filteredGhosts = filtered;
+    // Separate included and excluded ghosts
+    const includedGhosts = filtered.filter(ghost => !state.excludedGhosts.has(ghost.id));
+    const excludedGhosts = GHOSTS.filter(ghost => state.excludedGhosts.has(ghost.id));
+    
+    // Sort: included ghosts first (by name), then excluded ghosts (by name)
+    includedGhosts.sort((a, b) => a.name.localeCompare(b.name));
+    excludedGhosts.sort((a, b) => a.name.localeCompare(b.name));
+    
+    state.filteredGhosts = [...includedGhosts, ...excludedGhosts];
     
     // Update UI
     updateEvidenceGrid();
@@ -341,6 +349,18 @@ function createGhostCard(ghost) {
         e.stopPropagation();
         handleGhostConfirm(ghost.id, false);
     });
+    
+    // Speed sound button
+    const speedSoundBtn = card.querySelector('.ghost-speed-sound');
+    if (speedSoundBtn) {
+        speedSoundBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const speedFile = e.target.getAttribute('data-speed-file');
+            if (speedFile) {
+                previewSpeedSound(speedFile, e.target);
+            }
+        });
+    }
     
     return card;
 }
