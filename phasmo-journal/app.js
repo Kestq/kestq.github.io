@@ -378,6 +378,26 @@ function getSpeedText(ghost) {
     if (ghost.speed && ghost.speed.includes('->')) {
         return ghost.speed.replace('->', ' / ');
     }
+    
+    // Display multiple speeds based on ghost capabilities
+    if (ghost.huntSpeed && ghost.huntSpeed.includes('->')) {
+        return `Roam: ${ghost.speed || '1.7 m/s'} / Hunt: ${ghost.huntSpeed.replace('->', ' / ')}`;
+    }
+    
+    // Handle specific ghost speed variations
+    const speedVariations = {
+        'jinn': 'Roam: 1.7 m/s / Chase: 3.0 m/s',
+        'hantu': 'Warm: 1.7 m/s / Cold: 2.8 m/s',
+        'revenant': 'Search: 1.7 m/s / Hunt: 3.0 m/s',
+        'moroi': 'Normal: 1.7 m/s / Cursed: 3.7 m/s',
+        'deogen': 'Search: 1.6 m/s / Hunt: 3.0 m/s',
+        'raiju': 'Normal: 1.7 m/s / Electronics: 2.5 m/s'
+    };
+    
+    if (speedVariations[ghost.id]) {
+        return speedVariations[ghost.id];
+    }
+    
     return ghost.speed || '1.7 m/s';
 }
 
