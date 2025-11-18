@@ -1138,6 +1138,429 @@ body {
     gap: 1rem;
 }
 
+/* New Ghost Grid Layout */
+.ghost-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    padding: 1.5rem;
+}
+
+@media (max-width: 1024px) {
+    .ghost-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .ghost-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* New Ghost Card Design */
+.ghost-card {
+    background: rgba(var(--card), 0.25);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(var(--border), 0.3);
+    border-radius: 0.75rem;
+    padding: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    min-height: 280px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.ghost-card:hover {
+    border-color: rgba(139, 92, 246, 0.5);
+    box-shadow: 0 8px 25px rgba(139, 92, 246, 0.2);
+    transform: translateY(-2px);
+}
+
+.ghost-card.excluded {
+    opacity: 0.6;
+    background: rgba(var(--muted), 0.3);
+    border-color: var(--muted);
+}
+
+/* Ghost Header */
+.ghost-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.ghost-name {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--card-foreground);
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.ghost-name:hover {
+    color: #8b5cf6;
+}
+
+.ghost-tag {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    background: rgba(var(--accent), 0.2);
+    color: var(--accent-foreground);
+    font-weight: 500;
+}
+
+/* Ghost Body - Two Column Layout */
+.ghost-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    flex: 1;
+}
+
+/* Left Column - Stats & Evidence */
+.ghost-left {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* Hunt Sanity Row */
+.ghost-hunt-row {
+    display: flex;
+    justify-content: center;
+}
+
+.ghost-hunt {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.375rem 0.75rem;
+    border-radius: 1rem;
+    background: rgba(var(--primary), 0.1);
+    border: 1px solid rgba(var(--primary), 0.3);
+    min-width: 120px;
+}
+
+.ghost-hunt-icon {
+    width: 16px;
+    height: 16px;
+    background: var(--primary);
+    border-radius: 50%;
+}
+
+.ghost-hunt-values {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.ghost-hunt-main {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--card-foreground);
+}
+
+.ghost-hunt-label {
+    font-size: 0.625rem;
+    color: var(--muted-foreground);
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+}
+
+/* Speed Row */
+.ghost-speed-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.ghost-los-chip {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    background: rgba(var(--secondary), 0.2);
+    border: 1px solid rgba(var(--secondary), 0.3);
+    border-radius: 0.25rem;
+    font-size: 0.7rem;
+    color: var(--card-foreground);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.ghost-los-chip:hover {
+    background: rgba(var(--secondary), 0.3);
+}
+
+.ghost-speed-main {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--card-foreground);
+    flex: 1;
+    text-align: center;
+}
+
+.ghost-speed-sound {
+    background: none;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 0.25rem;
+    transition: all 0.2s;
+    color: var(--muted-foreground);
+}
+
+.ghost-speed-sound:hover {
+    background: rgba(var(--primary), 0.2);
+    color: var(--primary);
+}
+
+/* Evidence Row */
+.ghost-evidence-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+}
+
+.evidence-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.375rem;
+    font-size: 0.7rem;
+    font-weight: 500;
+    border: 1px solid;
+}
+
+.evidence-chip--emf {
+    background: rgba(239, 68, 68, 0.2);
+    border-color: rgba(239, 68, 68, 0.4);
+    color: #fca5a5;
+}
+
+.evidence-chip--box {
+    background: rgba(245, 158, 11, 0.2);
+    border-color: rgba(245, 158, 11, 0.4);
+    color: #fbbf24;
+}
+
+.evidence-chip--writing {
+    background: rgba(59, 130, 246, 0.2);
+    border-color: rgba(59, 130, 246, 0.4);
+    color: #93c5fd;
+}
+
+.evidence-chip--uv {
+    background: rgba(139, 92, 246, 0.2);
+    border-color: rgba(139, 92, 246, 0.4);
+    color: #c4b5fd;
+}
+
+.evidence-chip--orbs {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
+    color: var(--card-foreground);
+}
+
+.evidence-chip--dots {
+    background: rgba(34, 197, 94, 0.2);
+    border-color: rgba(34, 197, 94, 0.4);
+    color: #86efac;
+}
+
+.evidence-chip--tempgun {
+    background: rgba(14, 165, 233, 0.2);
+    border-color: rgba(14, 165, 233, 0.4);
+    color: #7dd3fc;
+}
+
+/* Right Column - Tabs */
+.ghost-right {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.75rem;
+    min-height: 0;
+}
+
+.ghost-tab-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.tab-btn {
+    padding: 0.375rem 0.5rem;
+    background: transparent;
+    border: 1px solid rgba(var(--border), 0.3);
+    border-radius: 0.375rem;
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: var(--muted-foreground);
+    cursor: pointer;
+    transition: all 0.2s;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    min-width: 32px;
+    height: 60px;
+}
+
+.tab-btn:hover {
+    background: rgba(var(--accent), 0.2);
+    color: var(--card-foreground);
+}
+
+.tab-btn--active {
+    background: rgba(139, 92, 246, 0.2);
+    border-color: rgba(139, 92, 246, 0.5);
+    color: #8b5cf6;
+}
+
+.ghost-tab-box {
+    background: rgba(var(--muted), 0.1);
+    border: 1px solid rgba(var(--border), 0.2);
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+    overflow-y: auto;
+}
+
+.ghost-tab-panel {
+    display: none;
+}
+
+.ghost-tab-panel--active {
+    display: block;
+}
+
+.ghost-tab-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--card-foreground);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.ghost-tab-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+}
+
+.ghost-tab-list li {
+    font-size: 0.7rem;
+    color: var(--muted-foreground);
+    line-height: 1.4;
+    padding-left: 0.75rem;
+    position: relative;
+}
+
+.ghost-tab-list li::before {
+    content: '•';
+    color: #8b5cf6;
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+}
+
+/* Ghost Footer */
+.ghost-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 0.5rem;
+    border-top: 1px solid rgba(var(--border), 0.2);
+    margin-top: auto;
+}
+
+.ghost-footer-summary {
+    font-size: 0.7rem;
+    color: var(--muted-foreground);
+    font-weight: 500;
+}
+
+.ghost-footer-actions {
+    display: flex;
+    gap: 0.375rem;
+}
+
+.icon-btn {
+    width: 28px;
+    height: 28px;
+    border: none;
+    border-radius: 0.375rem;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-btn--select {
+    background: rgba(16, 185, 129, 0.2);
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.4);
+}
+
+.icon-btn--select:hover {
+    background: rgba(16, 185, 129, 0.3);
+}
+
+.icon-btn--exclude {
+    background: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.4);
+}
+
+.icon-btn--exclude:hover {
+    background: rgba(239, 68, 68, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .ghost-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .ghost-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .ghost-body {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+    
+    .ghost-right {
+        grid-template-columns: 1fr;
+    }
+    
+    .ghost-tab-buttons {
+        flex-direction: row;
+        justify-content: center;
+    }
+    
+    .tab-btn {
+        writing-mode: horizontal-tb;
+        height: auto;
+        padding: 0.5rem;
+        min-width: auto;
+    }
+}
 .ghost-card {
     background: var(--card);
     border: 1px solid var(--border);
@@ -1284,6 +1707,7 @@ body {
     font-size: 0.7rem;
     color: var(--muted-foreground);
 }
+/* Remove old ghost card styles that are no longer used */
 
 /* Responsive design for smaller screens */
 @media (max-width: 768px) {

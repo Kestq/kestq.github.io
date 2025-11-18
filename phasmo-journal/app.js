@@ -167,6 +167,9 @@ function updateGhostList() {
     const container = document.getElementById('ghostsContainer');
     container.innerHTML = '';
     
+    // Add class for new grid layout
+    container.className = 'ghost-grid';
+    
     state.filteredGhosts.forEach(ghost => {
         const card = createGhostCard(ghost);
         container.appendChild(card);
@@ -185,89 +188,109 @@ function createGhostCard(ghost) {
     const matchScore = getGhostMatchScore(ghost, state.selectedEvidences);
     
     card.innerHTML = `
-        <div class="ghost-content">
+        <!-- Ghost Header -->
+        <div class="ghost-header">
+            <h3 class="ghost-name clickable" data-ghost="${ghost.id}">${ghost.name}</h3>
+            <span class="ghost-tag">${getGhostTag(ghost)}</span>
+        </div>
+
+        <!-- Ghost Body - Two Column Layout -->
+        <div class="ghost-body">
+            <!-- Left Column - Stats & Evidence -->
             <div class="ghost-left">
-                <div class="ghost-header">
-                    <h3 class="ghost-name clickable" data-ghost="${ghost.id}">${ghost.name}</h3>
-                    <span class="ghost-difficulty">${matchScore.score}% match</span>
+                <!-- Hunt Sanity Row -->
+                <div class="ghost-hunt-row">
+                    <div class="ghost-hunt">
+                        <div class="ghost-hunt-icon"></div>
+                        <div class="ghost-hunt-values">
+                            <div class="ghost-hunt-main">${ghost.huntThreshold || '50%'}</div>
+                            <div class="ghost-hunt-label">Hunt sanity</div>
+                        </div>
+                    </div>
                 </div>
-                <div class="ghost-evidences">
+
+                <!-- Speed Row -->
+                <div class="ghost-speed-row">
+                    <button class="ghost-los-chip">
+                        👁️ LOS + Footsteps
+                    </button>
+                    <span class="ghost-speed-main">${getSpeedText(ghost)}</span>
+                    <button class="ghost-speed-sound" data-ghost="${ghost.id}" data-speed-file="${getSpeedAudioFile(ghost.speed)}" title="Preview Speed Sound">
+                        🔊
+                    </button>
+                </div>
+
+                <!-- Evidence Row -->
+                <div class="ghost-evidence-row">
                     ${ghost.evidences.map(evidence => {
-                        const iconClass = evidence.toLowerCase().replace(/[.\s]/g, '');
+                        const chipClass = evidence.toLowerCase().replace(/[.\s]/g, '');
+                        const shortName = evidence.split(' ')[0];
                         return `
-                            <span class="evidence-tag">
-                                <img src="ASSETS/svg/${EVIDENCE_ICONS[evidence] || 'file.svg'}" alt="" class="evidence-icon ${iconClass}">
-                                <span>${evidence}</span>
+                            <span class="evidence-chip evidence-chip--${chipClass}">
+                                ${evidence}
                             </span>
                         `;
                     }).join('')}
                 </div>
-                <div class="ghost-stats">
-                    <span class="speed-display">
-                        <span class="speed-text">${ghost.speed || '1.7 m/s'}</span>
-                        <button class="speed-preview-btn" data-ghost="${ghost.id}" data-speed-file="${getSpeedAudioFile(ghost.speed)}" title="Preview Speed Sound">
-                            🔊
-                        </button>
-                    </span>
-                    <span>${ghost.huntThreshold || '50%'} sanity</span>
+            </div>
+
+            <!-- Right Column - Tabs -->
+            <div class="ghost-right">
+                <!-- Tab Buttons -->
+                <div class="ghost-tab-buttons">
+                    <button class="tab-btn tab-btn--active" data-tab="tests">Tests</button>
+                    <button class="tab-btn" data-tab="behavior">Behavior</button>
+                    <button class="tab-btn" data-tab="stats">Stats</button>
                 </div>
-                <div class="ghost-actions">
-                    <button class="action-confirm" data-ghost="${ghost.id}">✓</button>
-                    <button class="action-exclude" data-ghost="${ghost.id}">✕</button>
+
+                <!-- Tab Content Box -->
+                <div class="ghost-tab-box">
+                    <!-- Tests Panel -->
+                    <div class="ghost-tab-panel ghost-tab-panel--active" data-tab="tests">
+                        <div class="ghost-tab-label">Tests</div>
+                        <ul class="ghost-tab-list">
+                            ${ghost.tests ? ghost.tests.map(test => `<li>${test}</li>`).join('') : '<li>Use standard testing methods</li>'}
+                            ${getGhostSpecificTests(ghost).map(test => `<li>${test}</li>`).join('')}
+                        </ul>
+                    </div>
+
+                    <!-- Behavior Panel -->
+                    <div class="ghost-tab-panel" data-tab="behavior">
+                        <div class="ghost-tab-label">Behavior</div>
+                        <ul class="ghost-tab-list">
+                            ${ghost.behaviors ? ghost.behaviors.map(behavior => `<li>${behavior}</li>`).join('') : '<li>Standard ghost behavior</li>'}
+                            ${ghost.abilities ? ghost.abilities.map(ability => `<li>${ability}</li>`).join('') : ''}
+                        </ul>
+                    </div>
+
+                    <!-- Stats Panel -->
+                    <div class="ghost-tab-panel" data-tab="stats">
+                        <div class="ghost-tab-label">Stats</div>
+                        <ul class="ghost-tab-list">
+                            <li><strong>Speed:</strong> ${ghost.speed || '1.7 m/s'}</li>
+                            ${ghost.huntSpeed ? `<li><strong>Hunt Speed:</strong> ${ghost.huntSpeed}</li>` : ''}
+                            <li><strong>Hunt Threshold:</strong> ${ghost.huntThreshold || '50%'}</li>
+                            ${ghost.guaranteedEvidence ? `<li><strong>Guaranteed Evidence:</strong> ${ghost.guaranteedEvidence.join(', ')}</li>` : ''}
+                            ${ghost.strengths && ghost.strengths[0] !== "None" ? `<li><strong>Strength:</strong> ${ghost.strengths[0]}</li>` : ''}
+                            ${ghost.weaknesses ? `<li><strong>Weakness:</strong> ${ghost.weaknesses[0]}</li>` : ''}
+                        </ul>
+                    </div>
                 </div>
             </div>
-            <div class="ghost-right">
-                <div class="ghost-details-scroll">
-                    ${ghost.tells && ghost.tells.length > 0 ? `
-                        <div class="detail-section">
-                            <h4>Tells</h4>
-                            <ul>
-                                ${ghost.tells.map(tell => `<li>${tell}</li>`).join('')}
-                            </ul>
-                        </div>
-                    ` : ''}
-                    
-                    ${ghost.behaviors && ghost.behaviors.length > 0 ? `
-                        <div class="detail-section">
-                            <h4>Behaviors</h4>
-                            <ul>
-                                ${ghost.behaviors.map(behavior => `<li>${behavior}</li>`).join('')}
-                            </ul>
-                        </div>
-                    ` : ''}
-                    
-                    ${ghost.abilities && ghost.abilities.length > 0 ? `
-                        <div class="detail-section">
-                            <h4>Abilities</h4>
-                            <ul>
-                                ${ghost.abilities.map(ability => `<li>${ability}</li>`).join('')}
-                            </ul>
-                        </div>
-                    ` : ''}
-                    
-                    ${ghost.huntSpeed ? `
-                        <div class="detail-section">
-                            <h4>Hunt Speed</h4>
-                            <div class="hunt-speed-display">
-                                <div class="speed-preview">
-                                    <span>${ghost.huntSpeed}</span>
-                                    <button class="speed-preview-btn" data-ghost="${ghost.id}" data-speed-file="${getSpeedAudioFile(ghost.huntSpeed)}" title="Preview Hunt Speed Sound">
-                                        🔊
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    ` : ''}
-                    
-                    ${ghost.guaranteedEvidence && ghost.guaranteedEvidence.length > 0 ? `
-                        <div class="detail-section">
-                            <h4>Guaranteed Evidence</h4>
-                            <ul>
-                                ${ghost.guaranteedEvidence.map(evidence => `<li>${evidence}</li>`).join('')}
-                            </ul>
-                        </div>
-                    ` : ''}
-                </div>
+        </div>
+
+        <!-- Ghost Footer -->
+        <div class="ghost-footer">
+            <div class="ghost-footer-summary">
+                ${ghost.name} · ${ghost.evidences.join(' / ')}
+            </div>
+            <div class="ghost-footer-actions">
+                <button class="icon-btn icon-btn--select" data-ghost="${ghost.id}" title="Mark as possible">
+                    ✓
+                </button>
+                <button class="icon-btn icon-btn--exclude" data-ghost="${ghost.id}" title="Mark as not">
+                    ✕
+                </button>
             </div>
         </div>
     `;
@@ -290,18 +313,171 @@ function createGhostCard(ghost) {
         card.querySelector('.action-exclude').title = 'Bring Back';
     }
     
+    // Add data attribute for identification
+    card.dataset.ghost = ghost.id;
+    
+    // Check if ghost is excluded for visual styling
+    if (state.excludedGhosts.has(ghost.id)) {
+        card.classList.add('excluded');
+        card.querySelector('.icon-btn--exclude').title = 'Bring Back';
+    }
+    
+    // Tab functionality
+    card.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const tab = btn.dataset.tab;
+            activateTab(card, tab);
+        });
+    });
+    
     // Action buttons
-    card.querySelector('.action-confirm').addEventListener('click', (e) => {
+    card.querySelector('.icon-btn--select').addEventListener('click', (e) => {
         e.stopPropagation();
         handleGhostConfirm(ghost.id, true);
     });
     
-    card.querySelector('.action-exclude').addEventListener('click', (e) => {
+    card.querySelector('.icon-btn--exclude').addEventListener('click', (e) => {
         e.stopPropagation();
         handleGhostConfirm(ghost.id, false);
     });
     
     return card;
+}
+
+// Helper functions
+function getGhostTag(ghost) {
+    if (ghost.behaviorTags && ghost.behaviorTags.includes('common')) return 'Base Ghost';
+    if (ghost.behaviorTags && ghost.behaviorTags.includes('aggressive')) return 'Aggressive';
+    if (ghost.behaviorTags && ghost.behaviorTags.includes('fast')) return 'Fast';
+    if (ghost.behaviorTags && ghost.behaviorTags.includes('electronic')) return 'Electronic';
+    return 'Special Ghost';
+}
+
+function getSpeedText(ghost) {
+    if (ghost.speed && ghost.speed.includes('->')) {
+        return ghost.speed.replace('->', ' / ');
+    }
+    return ghost.speed || '1.7 m/s';
+}
+
+function getGhostSpecificTests(ghost) {
+    const tests = [];
+    
+    switch (ghost.id) {
+        case 'spirit':
+            tests.push('Use smudge stick during hunt');
+            tests.push('Watch for 180-second protection');
+            break;
+        case 'wraith':
+            tests.push('Place salt on floor');
+            tests.push('Check for teleport activity');
+            break;
+        case 'phantom':
+            tests.push('Take photo during ghost event');
+            tests.push('Observe sanity drain while looking');
+            break;
+        case 'poltergeist':
+            tests.push('Find empty room');
+            tests.push('Test object throwing frequency');
+            break;
+        case 'banshee':
+            tests.push('Place crucifix in suspected room');
+            tests.push('Listen for singing before hunts');
+            break;
+        case 'jinn':
+            tests.push('Turn off breaker');
+            tests.push('Observe speed change when chasing');
+            break;
+        case 'mare':
+            tests.push('Turn on all lights');
+            tests.push('Check aggression in darkness');
+            break;
+        case 'revenant':
+            tests.push('Hide from ghost during hunt');
+            tests.push('Observe speed change');
+            break;
+        case 'shade':
+            tests.push('Investigate in groups');
+            tests.push('Check activity with multiple people');
+            break;
+        case 'demon':
+            tests.push('Use Ouija board');
+            tests.push('Observe sanity drop');
+            break;
+        case 'yurei':
+            tests.push('Smudge in rooms');
+            tests.push('Check door slamming');
+            break;
+        case 'oni':
+            tests.push('Investigate with multiple people');
+            tests.push('Observe visible activity');
+            break;
+        case 'yokai':
+            tests.push('Talk near ghost');
+            tests.push('Stay silent for calm hunting');
+            break;
+        case 'hantu':
+            tests.push('Turn on freezer');
+            tests.push('Observe speed in cold vs warm');
+            break;
+        case 'goryo':
+            tests.push('Use DOTS with camera alone');
+            tests.push('Avoid being in same room');
+            break;
+        case 'myling':
+            tests.push('Use parabolic microphone');
+            tests.push('Listen for paranormal sounds');
+            break;
+        case 'onryo':
+            tests.push('Light all candles');
+            tests.push('Blow out flames to trigger hunt');
+            break;
+        case 'the-twins':
+            tests.push('Interact with both twins');
+            tests.push('Observe coordinated activity');
+            break;
+        case 'raiju':
+            tests.push('Turn off all electronics');
+            tests.push('Use electronics near ghost');
+            break;
+        case 'obake':
+            tests.push('Look for UV shape changes');
+            tests.push('Check evidence consistency');
+            break;
+        case 'the-mimic':
+            tests.push('Wait for true form reveal');
+            tests.push('Observe evidence changes');
+            break;
+        case 'moroi':
+            tests.push('Smudge during curse');
+            tests.push('Check speed when cursed');
+            break;
+        case 'deogen':
+            tests.push('Hide and listen for breathing');
+            tests.push('Test player location awareness');
+            break;
+        case 'thaye':
+            tests.push('Observe aging process');
+            tests.push('Check activity changes over time');
+            break;
+    }
+    
+    return tests;
+}
+
+function activateTab(card, tabName) {
+    // Update tab buttons
+    card.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('tab-btn--active');
+    });
+    card.querySelector(`.tab-btn[data-tab="${tabName}"]`).classList.add('tab-btn--active');
+    
+    // Update tab panels
+    card.querySelectorAll('.ghost-tab-panel').forEach(panel => {
+        panel.classList.remove('ghost-tab-panel--active');
+    });
+    card.querySelector(`.ghost-tab-panel[data-tab="${tabName}"]`).classList.add('ghost-tab-panel--active');
 }
 
 function handleGhostConfirm(ghostId, confirmed) {
