@@ -406,11 +406,11 @@ function getDifficultySpecificGhosts(difficulty, selectedEvidences = []) {
 const EVIDENCE_ICONS = {
     'EMF Level 5': 'emf.svg',
     'D.O.T.S': 'dots.svg',
-    'Freezing Temps': 'temp.svg',
+    'Freezing Temps': 'tempgun.svg',
     'Ghost Writing': 'book.svg',
     'Ghost Orbs': 'orbs.svg',
     'Spirit Box': 'spiritbox.svg',
-    'Ultraviolet': 'uv.svg'
+    'Ultraviolet': 'UV.svg'
 };
 
 // Export for use in app.js

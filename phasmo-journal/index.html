@@ -22,6 +22,75 @@
                 <h1 class="logo">PHASMO JOURNAL</h1>
             </div>
             <div class="nav-right">
+                <a href="#" class="nav-link" data-page="twitch">Twitch</a>
+                <a href="#" class="nav-link" data-page="discord">Discord</a>
+                <a href="#" class="nav-link" data-page="news">News</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-toggle">
+            <button class="mode-btn active" data-mode="filters">Filters</button>
+            <button class="mode-btn" data-mode="tools">Tools</button>
+        </div>
+
+        <div class="sidebar-content" id="filtersMode">
+            <!-- Difficulty Dropdown -->
+            <div class="filter-group">
+                <label class="filter-label">Difficulty</label>
+                <select id="difficultySelect" class="filter-select">
+                    <option value="Amateur">Amateur (3 Evidence)</option>
+                    <option value="Intermediate">Intermediate (3 Evidence)</option>
+                    <option value="Professional">Professional (3 Evidence)</option>
+                    <option value="Nightmare">Nightmare (2 Evidence)</option>
+                    <option value="Insanity">Insanity (1 Evidence)</option>
+                </select>
+            </div>
+
+            <!-- Evidence Selection -->
+            <div class="filter-group">
+                <label class="filter-label">Evidence (Click to cycle)</label>
+                <div class="evidence-grid" id="evidenceGrid">
+                    <!-- Evidence buttons will be populated by JavaScript -->
+                </div>
+                <div class="evidence-limit" id="evidenceLimit"></div>
+            </div>
+
+            <!-- Speed Sort -->
+            <div class="filter-group">
+                <label class="filter-label">Speed Sort</label>
+                <div class="speed-grid">
+                    <button class="speed-btn" data-speed="slow">Slow</button>
+                    <button class="speed-btn" data-speed="normal">Normal</button>
+                    <button class="speed-btn" data-speed="fast">Fast</button>
+                </div>
+            </div>
+
+            <!-- Hunt Sanity Filter -->
+            <div class="filter-group">
+                <label class="filter-label">Hunt Sanity</label>
+                <div class="hunt-grid">
+                    <button class="hunt-btn active" data-hunt="all">All</button>
+                    <button class="hunt-btn" data-hunt="late">Late <40%</button>
+                    <button class="hunt-btn" data-hunt="normal">Normal >40%</button>
+                    <button class="hunt-btn" data-hunt="early">Early >50%</button>
+                    <button class="hunt-btn" data-hunt="very-early">Very Early >75%</button>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="filter-group">
+                <div class="actions-grid">
+                    <button id="clearBtn" class="action-btn clear">🗑️ Clear</button>
+                    <button id="resetBtn" class="action-btn reset">🔄 Reset</button>
+                </div>
+            </div>
+
+            <!-- Theme Selector -->
+            <div class="filter-group">
+                <label class="filter-label">Theme</label>
                 <div class="theme-selector">
                     <button class="theme-btn" id="themeBtn">
                         <span class="theme-preview" id="themePreview"></span>
@@ -200,70 +269,6 @@
                             <span>Mauve Delicate</span>
                         </div>
                     </div>
-                </div>
-                <a href="#" class="nav-link" data-page="twitch">Twitch</a>
-                <a href="#" class="nav-link" data-page="discord">Discord</a>
-                <a href="#" class="nav-link" data-page="news">News</a>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <div class="sidebar-toggle">
-            <button class="mode-btn active" data-mode="filters">Filters</button>
-            <button class="mode-btn" data-mode="tools">Tools</button>
-        </div>
-
-        <div class="sidebar-content" id="filtersMode">
-            <!-- Difficulty Dropdown -->
-            <div class="filter-group">
-                <label class="filter-label">Difficulty</label>
-                <select id="difficultySelect" class="filter-select">
-                    <option value="Amateur">Amateur (3 Evidence)</option>
-                    <option value="Intermediate">Intermediate (3 Evidence)</option>
-                    <option value="Professional">Professional (3 Evidence)</option>
-                    <option value="Nightmare">Nightmare (2 Evidence)</option>
-                    <option value="Insanity">Insanity (1 Evidence)</option>
-                </select>
-            </div>
-
-            <!-- Evidence Selection -->
-            <div class="filter-group">
-                <label class="filter-label">Evidence (Click to cycle)</label>
-                <div class="evidence-grid" id="evidenceGrid">
-                    <!-- Evidence buttons will be populated by JavaScript -->
-                </div>
-                <div class="evidence-limit" id="evidenceLimit"></div>
-            </div>
-
-            <!-- Speed Sort -->
-            <div class="filter-group">
-                <label class="filter-label">Speed Sort</label>
-                <div class="speed-grid">
-                    <button class="speed-btn" data-speed="slow">Slow</button>
-                    <button class="speed-btn" data-speed="normal">Normal</button>
-                    <button class="speed-btn" data-speed="fast">Fast</button>
-                </div>
-            </div>
-
-            <!-- Hunt Sanity Filter -->
-            <div class="filter-group">
-                <label class="filter-label">Hunt Sanity</label>
-                <div class="hunt-grid">
-                    <button class="hunt-btn active" data-hunt="all">All</button>
-                    <button class="hunt-btn" data-hunt="late">Late <40%</button>
-                    <button class="hunt-btn" data-hunt="normal">Normal >40%</button>
-                    <button class="hunt-btn" data-hunt="early">Early >50%</button>
-                    <button class="hunt-btn" data-hunt="very-early">Very Early >75%</button>
-                </div>
-            </div>
-
-            <!-- Quick Actions -->
-            <div class="filter-group">
-                <div class="actions-grid">
-                    <button id="clearBtn" class="action-btn clear">🗑️ Clear</button>
-                    <button id="resetBtn" class="action-btn reset">🔄 Reset</button>
                 </div>
             </div>
         </div>

@@ -152,7 +152,7 @@ function updateEvidenceGrid() {
         button.disabled = maxReached;
         
         button.innerHTML = `
-            <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor'><path d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z'/></svg>" alt="" class="evidence-icon">
+            <img src="ASSETS/svg/${EVIDENCE_ICONS[evidence] || 'file.svg'}" alt="" class="evidence-icon">
             <span class="flex-1 text-left">${evidence}</span>
             ${isSelected ? '<span class="text-xs bg-[#059669] px-1.5 py-0.5 rounded">SELECTED</span>' : ''}
             ${isExcluded ? '<span class="text-xs bg-[#dc2626] px-1.5 py-0.5 rounded">EXCLUDED</span>' : ''}
@@ -247,7 +247,7 @@ function showGhostModal(ghost) {
             <div class="evidence-list">
                 ${ghost.evidences.map(evidence => `
                     <div class="evidence-item">
-                        <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor'><path d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z'/></svg>" alt="" class="evidence-icon">
+                        <img src="ASSETS/svg/${EVIDENCE_ICONS[evidence] || 'file.svg'}" alt="" class="evidence-icon">
                         <span>${evidence}</span>
                     </div>
                 `).join('')}
@@ -315,7 +315,7 @@ function updateSelectedEvidence() {
             const badge = document.createElement('div');
             badge.className = 'evidence-badge';
             badge.innerHTML = `
-                <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor'><path d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z'/></svg>" alt="" class="evidence-icon">
+                <img src="ASSETS/svg/${EVIDENCE_ICONS[evidence] || 'file.svg'}" alt="" class="evidence-icon">
                 <span>${evidence.split(' ')[0]}</span>
             `;
             evidenceList.appendChild(badge);
