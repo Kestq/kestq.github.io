@@ -1,0 +1,6 @@
+# Netlify redirects for clean URLs without extensions
+/*    /index.html   200
+
+# Redirect to clean URLs without extensions
+/phasmo-journal    /phasmo-journal/   301
+/phasmo-journal/*  /phasmo-journal/index.html   200

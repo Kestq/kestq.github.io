@@ -1,0 +1,14 @@
+ # Clean URL redirects for Apache servers
+Options +MultiViews
+RewriteEngine On
+
+# Redirect /phasmo-journal to /phasmo-journal/
+RewriteRule ^phasmo-journal$ /phasmo-journal/ [R=301,L]
+
+# Serve index.html for clean URLs without extensions
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^phasmo-journal/(.*)$ /phasmo-journal/index.html [L]
+
+# Default redirect for directory
+DirectoryIndex index.html

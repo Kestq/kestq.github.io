@@ -1340,9 +1340,9 @@ body {
 .ghost-evidence-row {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.25rem;
-    max-height: 32px;  /* limit evidence row height */
-    overflow-y: auto;  /* allow scrolling if too many evidence items */
+    gap: 0.125rem;  /* reduced gap */
+    max-height: 28px;  /* tighter height constraint */
+    overflow: hidden;  /* hide overflow instead of scrolling */
 }
 
 .evidence-chip {
@@ -1355,6 +1355,16 @@ body {
     font-weight: 500;
     border: 1px solid;
     flex-shrink: 0;  /* prevent shrinking */
+}
+
+/* Ensure all content stays within card bounds */
+.ghost-card {
+    overflow: hidden; /* Prevent any content from spilling out */
+}
+
+.ghost-card * {
+    box-sizing: border-box;
+    max-width: 100%; /* Ensure all child elements don't exceed card width */
 }
 
 .evidence-chip--emf {
@@ -1410,8 +1420,6 @@ body {
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
-    max-height: 28px;  /* ensure evidence chips don't take up too much space */
-    overflow: hidden;
 }
 
 .tab-btn {
@@ -1582,37 +1590,7 @@ body {
         min-width: auto;
     }
 }
-.ghost-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 0.5rem;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.ghost-card:hover {
-    border-color: var(--ring);
-.ghost-card.excluded {
-    opacity: 0.6;
-    background: rgba(var(--muted), 0.3);
-    border-color: var(--muted);
-}
-
-.ghost-card.excluded .action-exclude {
-    background: #6b7280;
-}
-
-.ghost-card.excluded .action-exclude::after {
-    content: '↶';
-}
-
-.ghost-card.fixed-size {
-    width: 510px;
-    height: 125px;
-    overflow: hidden;
-}
+/* Removed conflicting old ghost-card styles - using new compact design above */
 
 /* Evidence Icon Colors */
 .evidence-icon.tempgun {
@@ -1642,187 +1620,9 @@ body {
 .evidence-icon.emf {
     filter: hue-rotate(0deg) brightness(1.5);
 }
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-.ghost-content {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
-    height: 100%;
-}
+/* Removed conflicting old ghost content styles - using modern compact design above */
 
-.ghost-left {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.ghost-right {
-    background: var(--muted);
-    border-radius: 0.5rem;
-    padding: 1rem;
-    border: 1px solid var(--border);
-}
-
-.ghost-details-scroll {
-    height: 100%;
-    overflow-y: auto;
-    max-height: 300px;
-}
-
-.detail-section {
-    margin-bottom: 1rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid var(--border);
-}
-
-.detail-section:last-child {
-    border-bottom: none;
-    margin-bottom: 0;
-}
-
-.detail-section h4 {
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: var(--foreground);
-    margin-bottom: 0.5rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-
-.detail-section ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.detail-section li {
-    font-size: 0.7rem;
-    color: var(--muted-foreground);
-    line-height: 1.4;
-    margin-bottom: 0.25rem;
-    padding-left: 0.5rem;
-    position: relative;
-}
-
-.detail-section li::before {
-    content: '•';
-    color: var(--primary);
-    font-weight: bold;
-    position: absolute;
-    left: 0;
-}
-
-.detail-section p {
-    font-size: 0.7rem;
-    color: var(--muted-foreground);
-    line-height: 1.4;
-}
-
-.meta-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 0.25rem;
-}
-
-.meta-grid div {
-    font-size: 0.7rem;
-    color: var(--muted-foreground);
-}
-/* Remove old ghost card styles that are no longer used */
-
-/* Responsive design for smaller screens */
-@media (max-width: 768px) {
-    .ghost-content {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-    }
-    
-    .ghost-right {
-        max-height: 200px;
-    }
-    
-    .ghost-details-scroll {
-        max-height: 200px;
-    }
-}
-}
-
-.ghost-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.5rem;
-}
-
-.ghost-name {
-    font-size: 1.125rem;
-    font-weight: 600;
-    color: var(--card-foreground);
-}
-
-.ghost-difficulty {
-    font-size: 0.75rem;
-    padding: 0.25rem 0.5rem;
-    border-radius: 0.25rem;
-    background: var(--muted);
-    color: var(--muted-foreground);
-}
-
-.ghost-evidences {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-bottom: 0.5rem;
-}
-
-.evidence-tag {
-    font-size: 0.75rem;
-    padding: 0.125rem 0.375rem;
-    border-radius: 0.25rem;
-    background: var(--muted);
-    color: var(--muted-foreground);
-}
-
-.ghost-stats {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.75rem;
-    color: var(--muted-foreground);
-}
-
-.ghost-actions {
-    display: flex;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
-}
-
-.action-confirm,
-.action-exclude {
-    padding: 0.25rem 0.5rem;
-    border: none;
-    border-radius: 0.25rem;
-    font-size: 0.75rem;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.action-confirm {
-    background: #10b981;
-    color: white;
-}
-
-.action-confirm:hover {
-    background: #059669;
-}
-
-.action-exclude {
-    background: #ef4444;
-    color: white;
-}
-
-.action-exclude:hover {
-    background: #dc2626;
-}
+/* Removed duplicate old ghost styles - using modern compact design above */
 
 /* Modal */
 .modal {

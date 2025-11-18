@@ -1,0 +1,8 @@
+# Netlify redirects for clean URLs
+/*    /index.html   200
+
+# Redirect to clean project URLs
+/phasmo-journal    /phasmo-journal/   301
+/phasmo-journal/*  /phasmo-journal/index.html   200
+/phasmo-satisfactory    /phasmo-journal/index.html   301
+/phasmo-minecraft    /phasmo-journal/index.html   301
