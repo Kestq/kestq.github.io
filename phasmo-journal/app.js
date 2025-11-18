@@ -303,15 +303,15 @@ function createGhostCard(ghost) {
         </div>
     `;
     
-    // Force height and border styling via JavaScript
-    card.style.height = '135px';
-    card.style.maxHeight = '135px';
-    card.style.minHeight = '135px';
-    card.style.border = '1px solid var(--border)';
-    card.style.borderRadius = '12px';
-    card.style.background = 'var(--card)';
-    card.style.backdropFilter = 'none';
-    card.style.webkitBackdropFilter = 'none';
+    // Remove JavaScript inline styles that override CSS - let CSS handle layout
+    // card.style.height = '135px';  // REMOVED - causes layout issues
+    // card.style.maxHeight = '135px';  // REMOVED - causes overflow
+    // card.style.minHeight = '135px';  // REMOVED - prevents natural sizing
+    // card.style.border = '1px solid var(--border)';  // REMOVED - CSS handles this
+    // card.style.borderRadius = '12px';  // REMOVED - CSS handles this
+    // card.style.background = 'var(--card)';  // REMOVED - CSS handles this
+    // card.style.backdropFilter = 'none';  // REMOVED - CSS handles this
+    // card.style.webkitBackdropFilter = 'none';  // REMOVED - CSS handles this
     
     card.addEventListener('click', (e) => {
         // Only open modal when clicking on ghost name
@@ -321,17 +321,7 @@ function createGhostCard(ghost) {
         }
     });
     
-    // Add data attribute for identification
-    card.dataset.ghost = ghost.id;
-    
-    // Check if ghost is excluded for visual styling
-    if (state.excludedGhosts.has(ghost.id)) {
-        card.classList.add('excluded');
-        card.querySelector('.action-exclude').textContent = '↶';
-        card.querySelector('.action-exclude').title = 'Bring Back';
-    }
-    
-    // Add data attribute for identification
+    // Add data attribute for identification (single assignment)
     card.dataset.ghost = ghost.id;
     
     // Check if ghost is excluded for visual styling
@@ -340,7 +330,7 @@ function createGhostCard(ghost) {
         card.querySelector('.icon-btn--exclude').title = 'Bring Back';
     }
     
-    // Tab functionality
+    // Tab functionality - scoped to this card only
     card.querySelectorAll('.tab-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -350,15 +340,22 @@ function createGhostCard(ghost) {
     });
     
     // Action buttons
-    card.querySelector('.icon-btn--select').addEventListener('click', (e) => {
-        e.stopPropagation();
-        handleGhostConfirm(ghost.id, true);
-    });
+    const selectBtn = card.querySelector('.icon-btn--select');
+    const excludeBtn = card.querySelector('.icon-btn--exclude');
     
-    card.querySelector('.icon-btn--exclude').addEventListener('click', (e) => {
-        e.stopPropagation();
-        handleGhostConfirm(ghost.id, false);
-    });
+    if (selectBtn) {
+        selectBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            handleGhostConfirm(ghost.id, true);
+        });
+    }
+    
+    if (excludeBtn) {
+        excludeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            handleGhostConfirm(ghost.id, false);
+        });
+    }
     
     // Speed sound button
     const speedSoundBtn = card.querySelector('.ghost-speed-sound');

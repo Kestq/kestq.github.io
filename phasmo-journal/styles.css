@@ -1134,8 +1134,38 @@ body {
     padding: 1.5rem;
     padding-bottom: 6rem;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1rem;
+    width: 100%;
+}
+
+/* Main ghost grid container - clean 3 column layout */
+#ghostsContainer {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    padding: 1.5rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Responsive grid breakpoints */
+@media (max-width: 1024px) {
+    #ghostsContainer,
+    .ghosts-container {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    #ghostsContainer,
+    .ghosts-container {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        padding: 1rem;
+    }
 }
 
 /* New Ghost Grid Layout */
@@ -1158,44 +1188,50 @@ body {
     }
 }
 
-/* New Ghost Card Design - properly sized with crisp borders */
+/* New Ghost Card Design - Increased Height for Better Content Fit */
 .ghost-card {
-    background: var(--card) !important;
-    border: 1px solid var(--border) !important;
-    border-radius: 12px !important;  /* crisp pixel value instead of rem */
-    padding: 14px !important;  /* crisp pixel value */
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
     cursor: pointer;
     transition: all 0.2s ease;
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 10px !important;  /* crisp pixel value */
-    height: 135px !important;      /* 50% more than original 90px - forced */
-    max-height: 135px !important;
-    min-height: 135px !important;  /* ensure minimum height */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
-    overflow: visible !important; /* allow content to flow naturally */
-    /* Remove any blur effects that might cause blurry borders */
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    /* Ensure no other transforms affect the layout */
-    transform: none !important;
-    position: relative !important;
-    /* Force hardware acceleration for crisp rendering */
-    will-change: auto;
-    /* Additional border crispness */
-    border-style: solid !important;
-    border-width: 1px !important;
-    border-color: var(--border) !important;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    /* Increased height to accommodate all content properly */
+    min-height: 240px;
+    height: auto;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Keep content within card bounds */
+    overflow: hidden;
+    position: relative;
+    /* Remove blur effects that can cause issues */
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    /* Ensure no transforms affect layout */
+    transform: none;
+    /* Prevent content from causing layout shifts */
+    box-sizing: border-box;
 }
 
-/* Extra specific selector to override any JavaScript inline styles */
-#ghostsContainer .ghost-card,
-.ghost-grid .ghost-card {
-    height: 135px !important;
-    max-height: 135px !important;
-    min-height: 135px !important;
-    border: 1px solid var(--border) !important;
-    border-radius: 12px !important;
+/* Remove conflicting grid layouts that cause overlapping */
+.ghost-grid {
+    display: none !important;  /* Disable old grid that might conflict */
+}
+
+/* Ensure tab content stays within card bounds */
+.ghost-tab-box {
+    flex: 1;
+    background: rgba(var(--muted), 0.4);
+    border: 1px solid rgba(var(--border), 0.35);
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+    font-size: 0.7rem;
+    /* Increased height to accommodate all content */
+    max-height: 100px;
+    overflow: hidden;  /* No scrolling inside cards */
+    min-height: 80px;
 }
 
 .ghost-card:hover {
@@ -1359,13 +1395,17 @@ body {
     color: var(--primary);
 }
 
-/* Evidence Row */
+/* Evidence Row - Fixed to prevent overflow */
 .ghost-evidence-row {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.25rem;  /* restored gap */
-    max-height: 32px;  /* relaxed constraint for 135px cards */
-    overflow: visible;  /* allow content to flow naturally */
+    gap: 0.25rem;
+    /* Remove height constraints that cause content clipping */
+    max-height: none;
+    overflow: visible;
+    /* Ensure chips stay within card */
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .evidence-chip {
@@ -1472,11 +1512,12 @@ body {
     background: rgba(var(--muted), 0.4);
     border: 1px solid rgba(var(--border), 0.35);
     border-radius: 0.5rem;
-    padding: 0.5rem;
+    padding: 0.75rem;
     font-size: 0.7rem;
-    max-height: 65px;       /* proportionally increased for 135px card height */
-    overflow-y: auto;
-    overflow-x: hidden;
+    /* Increased height to accommodate all content properly */
+    max-height: 100px;
+    overflow: hidden;  /* No scrolling inside cards */
+    min-height: 80px;
 }
 
 .ghost-tab-panel {

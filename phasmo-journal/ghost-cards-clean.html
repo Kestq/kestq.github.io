@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phasmo Ghost Cards - Clean Layout</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0f0f0f;
+            color: #ffffff;
+            padding: 20px;
+            line-height: 1.5;
+        }
+
+        /* GRID CONTAINER - Key layout setup */
+        #cards {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Responsive Grid Breakpoints */
+        @media (max-width: 1024px) {
+            #cards {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 12px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            #cards {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+        }
+
+        /* GHOST CARD - Main container */
+        .ghost-card {
+            background: #1a1a1a;
+            border: 1px solid #333333;
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            min-height: 300px; /* Reasonable minimum height */
+            /* Remove any blur/transform effects that cause issues */
+            backdrop-filter: none;
+            transform: none;
+            position: relative;
+        }
+
+        .ghost-card:hover {
+            border-color: #8b5cf6;
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
+        }
+
+        /* Card Header */
+        .ghost-header {
+            margin-bottom: 16px;
+        }
+
+        .ghost-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 8px;
+        }
+
+        .ghost-stats {
+            display: flex;
+            gap: 12px;
+            font-size: 0.875rem;
+            color: #a1a1aa;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* MAIN CONTENT AREA - Flex layout for left/right sections */
+        .ghost-main {
+            display: flex;
+            gap: 16px;
+            flex: 1;
+            min-height: 0; /* Allow flex shrinking */
+        }
+
+        /* LEFT SIDE - Ghost info */
+        .ghost-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            min-width: 0; /* Allow text wrapping */
+        }
+
+        .hunt-info {
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 8px;
+            padding: 8px 12px;
+            font-size: 0.875rem;
+        }
+
+        .los-info {
+            font-size: 0.875rem;
+            color: #a1a1aa;
+        }
+
+        /* Evidence chips - wrap naturally */
+        .evidence-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: auto; /* Push to bottom */
+        }
+
+        .evidence-chip {
+            background: #333333;
+            border: 1px solid #555555;
+            border-radius: 6px;
+            padding: 4px 8px;
+            font-size: 0.75rem;
+            color: #ffffff;
+            white-space: nowrap;
+        }
+
+        /* RIGHT SIDE - Tab system */
+        .ghost-tabs {
+            width: 80px; /* Fixed width for tab buttons */
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        /* Tab buttons - vertical stack */
+        .tab-btn {
+            background: transparent;
+            border: 1px solid #444444;
+            border-radius: 6px;
+            padding: 8px 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #a1a1aa;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tab-btn:hover {
+            border-color: #8b5cf6;
+            color: #ffffff;
+        }
+
+        .tab-btn.active {
+            background: rgba(139, 92, 246, 0.2);
+            border-color: #8b5cf6;
+            color: #8b5cf6;
+        }
+
+        /* Tab content panel */
+        .tab-content {
+            flex: 1;
+            background: #222222;
+            border: 1px solid #444444;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 4px;
+            font-size: 0.875rem;
+            line-height: 1.4;
+            /* Prevent overflow issues */
+            overflow: hidden;
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .tab-content h4 {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #8b5cf6;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .tab-content ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .tab-content li {
+            padding: 2px 0;
+            position: relative;
+            padding-left: 12px;
+        }
+
+        .tab-content li::before {
+            content: '•';
+            color: #8b5cf6;
+            position: absolute;
+            left: 0;
+        }
+
+        /* Mobile responsive adjustments */
+        @media (max-width: 768px) {
+            .ghost-main {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .ghost-tabs {
+                width: 100%;
+                flex-direction: row;
+                gap: 8px;
+            }
+
+            .tab-btn {
+                writing-mode: horizontal-tb;
+                text-orientation: mixed;
+                min-height: auto;
+                padding: 8px 12px;
+                flex: 1;
+            }
+
+            .tab-content {
+                margin-top: 8px;
+            }
+        }
+
+        /* Example styling for excluded ghosts */
+        .ghost-card.excluded {
+            opacity: 0.6;
+            background: #0f0f0f;
+        }
+
+        .ghost-card.excluded .ghost-name {
+            color: #666666;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center; margin-bottom: 24px; color: #8b5cf6;">
+        Phasmo Ghost Cards - Clean Layout
+    </h1>
+
+    <!-- CARDS GRID CONTAINER -->
+    <div id="cards">
+        
+        <!-- GHOST CARD 1 -->
+        <div class="ghost-card" data-ghost="spirit">
+            <div class="ghost-header">
+                <h3 class="ghost-name">Spirit</h3>
+                <div class="ghost-stats">
+                    <div class="stat-item">
+                        <span>🧠</span>
+                        <span>50% Hunt</span>
+                    </div>
+                    <div class="stat-item">
+                        <span>👁️</span>
+                        <span>LOS + Footsteps</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ghost-main">
+                <!-- Left side: ghost info -->
+                <div class="ghost-info">
+                    <div class="hunt-info">
+                        Standard ghost behavior with normal interaction patterns.
+                    </div>
+                    <div class="los-info">
+                        Normal speed: 1.7 m/s
+                    </div>
+                    
+                    <!-- Evidence chips - naturally wrap -->
+                    <div class="evidence-chips">
+                        <span class="evidence-chip">EMF 5</span>
+                        <span class="evidence-chip">Spirit Box</span>
+                        <span class="evidence-chip">Writing</span>
+                    </div>
+                </div>
+
+                <!-- Right side: tab system -->
+                <div class="ghost-tabs">
+                    <button class="tab-btn active" data-tab="tests">TESTS</button>
+                    <button class="tab-btn" data-tab="behavior">BEHAVIOR</button>
+                    <button class="tab-btn" data-tab="stats">STATS</button>
+                    
+                    <div class="tab-content active" data-tab="tests">
+                        <h4>Tests</h4>
+                        <ul>
+                            <li>Use smudge stick during hunt</li>
+                            <li>Watch for 180-second protection</li>
+                            <li>Standard EMF readings expected</li>
+                        </ul>
+                    </div>
+
+                    <div class="tab-content" data-tab="behavior">
+                        <h4>Behavior</h4>
+                        <ul>
+                            <li>Normal interaction patterns</li>
+                            <li>Standard ghost behavior</li>
+                            <li>Regular paranormal activity</li>
+                        </ul>
+                    </div>
+
+                    <div class="tab-content" data-tab="stats">
+                        <h4>Stats</h4>
+                        <ul>
+                            <li>Speed: 1.7 m/s</li>
+                            <li>Hunt Threshold: 50%</li>
+                            <li>Evidence: EMF, Spirit Box, Writing</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- GHOST CARD 2 -->
+        <div class="ghost-card" data-ghost="wraith">
+            <div class="ghost-header">
+                <h3 class="ghost-name">Wraith</h3>
+                <div class="ghost-stats">
+                    <div class="stat-item">
+                        <span>🧠</span>
+                        <span>50% Hunt</span>
+                    </div>
+                    <div class="stat-item">
+                        <span>👁️</span>
+                        <span>LOS + Footsteps</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ghost-main">
+                <div class="ghost-info">
+                    <div class="hunt-info">
+                        Teleports to players and avoids salt areas.
+                    </div>
+                    <div class="los-info">
+                        Normal speed: 1.7 m/s
+                    </div>
+                    
+                    <div class="evidence-chips">
+                        <span class="evidence-chip">EMF 5</span>
+                        <span class="evidence-chip">Spirit Box</span>
+                        <span class="evidence-chip">DOTS</span>
+                    </div>
+                </div>
+
+                <div class="ghost-tabs">
+                    <button class="tab-btn active" data-tab="tests">TESTS</button>
+                    <button class="tab-btn" data-tab="behavior">BEHAVIOR</button>
+                    <button class="tab-btn" data-tab="stats">STATS</button>
+                    
+                    <div class="tab-content active" data-tab="tests">
+                        <h4>Tests</h4>
+                        <ul>
+                            <li>Place salt on floor</li>
+                            <li>Check for teleport activity</li>
+                            <li>Watch for EMF spikes without activity</li>
+                        </ul>
+                    </div>
+
+                    <div class="tab-content" data-tab="behavior">
+                        <h4>Behavior</h4>
+                        <ul>
+                            <li>Teleports to nearest player</li>
+                            <li>Avoids salt areas completely</li>
+                            <li>Can phase through walls</li>
+                        </ul>
+                    </div>
+
+                    <div class="tab-content" data-tab="stats">
+                        <h4>Stats</h4>
+                        <ul>
+                            <li>Speed: 1.7 m/s</li>
+                            <li>Hunt Threshold: 50%</li>
+                            <li>Evidence: EMF, Spirit Box, DOTS</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- GHOST CARD 3 -->
+        <div class="ghost-card" data-ghost="phantom">
+            <div class="ghost-header">
+                <h3 class="ghost-name">Phantom</h3>
+                <div class="ghost-stats">
+                    <div class="stat-item">
+                        <span>🧠</span>
+                        <span>50% Hunt</span>
+                    </div>
+                    <div class="stat-item">
+                        <span>👁️</span>
+                        <span>LOS + Footsteps</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ghost-main">
+                <div class="ghost-info">
+                    <div class="hunt-info">
+                        Becomes invisible and drains sanity when looked at.
+                    </div>
+                    <div class="los-info">
+                        Normal speed: 1.7 m/s
+                    </div>
+                    
+                    <div class="evidence-chips">
+                        <span class="evidence-chip">Spirit Box</span>
+                        <span class="evidence-chip">UV</span>
+                        <span class="evidence-chip">DOTS</span>
+                    </div>
+                </div>
+
+                <div class="ghost-tabs">
+                    <button class="tab-btn active" data-tab="tests">TESTS</button>
+                    <button class="tab-btn" data-tab="behavior">BEHAVIOR</button>
+                    <button class="tab-btn" data-tab="stats">STATS</button>
+                    
+                    <div class="tab-content active" data-tab="tests">
+                        <h4>Tests</h4>
+                        <ul>
+                            <li>Take photo during ghost event</li>
+                            <li>Observe sanity drain while looking</li>
+                            <li>Check for temporary disappearances</li>
+                        </ul>
+                    </div>
+
+                    <div class="tab-content" data-tab="behavior">
+                        <h4>Behavior</h4>
+                        <ul>
+                            <li>Becomes invisible during events</li>
+                            <li>Less likely to show during hunts</li>
+                            <li>Sensitive to camera flashes</li>
+                        </ul>
+                    </div>
+
+                    <div class="tab-content" data-tab="stats">
+                        <h4>Stats</h4>
+                        <ul>
+                            <li>Speed: 1.7 m/s</li>
+                            <li>Hunt Threshold: 50%</li>
+                            <li>Evidence: Spirit Box, UV, DOTS</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- GHOST CARD 4 -->
+        <div class="ghost-card" data-ghost="poltergeist">
+            <div class="ghost-header">
+                <h3 class="ghost-name">Poltergeist</h3>
+                <div class="ghost-stats">
+                    <div class="stat-item">
+                        <span>🧠</span>
+                        <span>50% Hunt</span>
+                    </div>
+                    <div class="stat-item">
+                        <span>👁️</span>
+                        <span>LOS + Footsteps</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ghost-main">
+                <div class="ghost-info">
+                    <div class="hunt-info">
+                        Throws multiple objects at once, most active during events.
+                    </div>
+                    <div class="los-info">
+                        Normal speed: 1.7 m/s
+                    </div>
+                    
+                    <div class="evidence-chips">
+                        <span class="evidence-chip">Spirit Box</span>
+                        <span class="evidence-chip">UV</span>
+                        <span class="evidence-chip">Writing</span>
+                    </div>
+                </div>
+
+                <div class="ghost-tabs">
+                    <button class="tab-btn active" data-tab="tests">TESTS</button>
+                    <button class="tab-btn" data-tab="behavior">BEHAVIOR</button>
+                    <button class="tab-btn" data-tab="stats">STATS</button>
+                    
+                    <div class="tab-content active" data-tab="tests">
+                        <h4>Tests</h4>
+                        <ul>
+                            <li>Find empty room</li>
+                            <li>Test object throwing frequency</li>
+                            <li>Look for multiple simultaneous throws</li>
+                        </ul>
+                    </div>
+
+                    <div class="tab-content" data-tab="behavior">
+                        <h4>Behavior</h4>
+                        <ul>
+                            <li>Most active during ghost events</li>
+                            <li>Throws objects frequently</li>
+                            <li>Loves to throw things at players</li>
+                        </ul>
+                    </div>
+
+                    <div class="tab-content" data-tab="stats">
+                        <h4>Stats</h4>
+                        <ul>
+                            <li>Speed: 1.7 m/s</li>
+                            <li>Hunt Threshold: 50%</li>
+                            <li>Evidence: Spirit Box, UV, Writing</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- GHOST CARD 5 -->
+        <div class="ghost-card" data-ghost="banshee">
+            <div class="ghost-header">
+                <h3 class="ghost-name">Banshee</h3>
+                <div class="ghost-stats">
+                    <div class="stat-item">
+                        <span>🧠</span>
+                        <span>50% Hunt</span>
+                    </div>
+                    <div class="stat-item">
+                        <span>👁️</span>
+                        <span>LOS + Footsteps</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ghost-main">
+                <div class="ghost-info">
+                    <div class="hunt-info">
+                        Targets one player until they leave the building.
+                    </div>
+                    <div class="los-info">
+                        Normal speed: 1.7 m/s
+                    </div>
+                    
+                    <div class="evidence-chips">
+                        <span class="evidence-chip">UV</span>
+                        <span class="evidence-chip">Orbs</span>
+                        <span class="evidence-chip">DOTS</span>
+                    </div>
+                </div>
+
+                <div class="ghost-tabs">
+                    <button class="tab-btn active" data-tab="tests">TESTS</button>
+                    <button class="tab-btn" data-tab="behavior">BEHAVIOR</button>
+                    <button class="tab-btn" data-tab="stats">STATS</button>
+                    
+                    <div class="tab-content active" data-tab="tests">
+                        <h4>Tests</h4>
+                        <ul>
+                            <li>Place crucifix in suspected room</li>
+                            <li>Listen for singing before hunts</li>
+                            <li>Identify single target behavior</li>
+                        </ul>
+                    </div>
+
+                    <div class="tab-content" data-tab="behavior">
+                        <h4>Behavior</h4>
+                        <ul>
+                            <li>Focused on one target player</li>
+                            <li>Less active when target is not present</li>
+                            <li>Musical sounds often heard</li>
+                        </ul>
+                    </div>
+
+                    <div class="tab-content" data-tab="stats">
+                        <h4>Stats</h4>
+                        <ul>
+                            <li>Speed: 1.7 m/s</li>
+                            <li>Hunt Threshold: 50%</li>
+                            <li>Evidence: UV, Orbs, DOTS</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- GHOST CARD 6 -->
+        <div class="ghost-card" data-ghost="jinn">
+            <div class="ghost-header">
+                <h3 class="ghost-name">Jinn</h3>
+                <div class="ghost-stats">
+                    <div class="stat-item">
+                        <span>🧠</span>
+                        <span>50% Hunt</span>
+                    </div>
+                    <div class="stat-item">
+                        <span>👁️</span>
+                        <span>LOS + Footsteps</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ghost-main">
+                <div class="ghost-info">
+                    <div class="hunt-info">
+                        Travels faster when chasing a player.
+                    </div>
+                    <div class="los-info">
+                        Speed: 1.7 → 3.0 m/s when chasing
+                    </div>
+                    
+                    <div class="evidence-chips">
+                        <span class="evidence-chip">EMF 5</span>
+                        <span class="evidence-chip">UV</span>
+                        <span class="evidence-chip">Freezing</span>
+                    </div>
+                </div>
+
+                <div class="ghost-tabs">
+                    <button class="tab-btn active" data-tab="tests">TESTS</button>
+                    <button class="tab-btn" data-tab="behavior">BEHAVIOR</button>
+                    <button class="tab-btn" data-tab="stats">STATS</button>
+                    
+                    <div class="tab-content active" data-tab="tests">
+                        <h4>Tests</h4>
+                        <ul>
+                            <li>Turn off breaker</li>
+                            <li>Observe speed change when chasing</li>
+                            <li>Check power drain during activity</li>
+                        </ul>
+                    </div>
+
+                    <div class="tab-content" data-tab="behavior">
+                        <h4>Behavior</h4>
+                        <ul>
+                            <li>Normal speed when roaming</li>
+                            <li>Very fast during hunts</li>
+                            <li>Dramatic speed increase when chasing</li>
+                        </ul>
+                    </div>
+
+                    <div class="tab-content" data-tab="stats">
+                        <h4>Stats</h4>
+                        <ul>
+                            <li>Speed: 1.7 → 3.0 m/s when chasing</li>
+                            <li>Hunt Threshold: 50%</li>
+                            <li>Evidence: EMF, UV, Freezing</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // CLEAN TAB SYSTEM - Scoped to each card
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle all tab buttons
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Get the card this button belongs to
+                    const card = this.closest('.ghost-card');
+                    const tabName = this.dataset.tab;
+                    
+                    // Remove active class from all buttons in this card
+                    card.querySelectorAll('.tab-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    // Hide all tab content in this card
+                    card.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    
+                    // Show the corresponding content
+                    const targetContent = card.querySelector(`.tab-content[data-tab="${tabName}"]`);
+                    if (targetContent) {
+                        targetContent.classList.add('active');
+                    }
+                });
+            });
+
+            // Optional: Example function to simulate ghost exclusion
+            function toggleGhostExclusion(ghostId) {
+                const card = document.querySelector(`[data-ghost="${ghostId}"]`);
+                if (card) {
+                    card.classList.toggle('excluded');
+                }
+            }
+
+            // Example usage:
+            // toggleGhostExclusion('spirit');
+        });
+    </script>
+</body>
+</html>
