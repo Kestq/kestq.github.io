@@ -352,8 +352,8 @@ function getEligibleEvidencesForDifficulty(difficulty) {
     return EVIDENCES;
 }
 
-function filterGhostsByEvidences(selectedEvidences, difficulty = null) {
-    if (selectedEvidences.length === 0) return GHOSTS;
+function filterGhostsByEvidences(selectedEvidences, excludedEvidences = [], difficulty = null) {
+    if (selectedEvidences.length === 0 && excludedEvidences.length === 0) return GHOSTS;
 
     if (difficulty) {
         const maxEvidences = getMaxEvidencesForDifficulty(difficulty);
@@ -362,9 +362,15 @@ function filterGhostsByEvidences(selectedEvidences, difficulty = null) {
         }
     }
 
-    return GHOSTS.filter(ghost =>
-        selectedEvidences.every(evidence => ghost.evidences.includes(evidence))
-    );
+    return GHOSTS.filter(ghost => {
+        // Must have all selected evidences
+        const hasAllSelected = selectedEvidences.every(evidence => ghost.evidences.includes(evidence));
+        
+        // Must NOT have any excluded evidences
+        const hasNoExcluded = excludedEvidences.every(excluded => !ghost.evidences.includes(excluded));
+        
+        return hasAllSelected && hasNoExcluded;
+    });
 }
 
 function getGhostMatchScore(ghost, selectedEvidences) {
@@ -379,7 +385,7 @@ function getGhostMatchScore(ghost, selectedEvidences) {
     return { score, matches, missing };
 }
 
-function getDifficultySpecificGhosts(difficulty, selectedEvidences = []) {
+function getDifficultySpecificGhosts(difficulty, selectedEvidences = [], excludedEvidences = []) {
     const maxEvidences = getMaxEvidencesForDifficulty(difficulty);
     
     switch (difficulty) {
@@ -388,17 +394,17 @@ function getDifficultySpecificGhosts(difficulty, selectedEvidences = []) {
                 const isObvious = ghost.name.toLowerCase().includes('spirit') ||
                                  ghost.name.toLowerCase().includes('wraith') ||
                                  ghost.name.toLowerCase().includes('phantom');
-                return !isObvious;
+                return !isObvious && excludedEvidences.every(excluded => !ghost.evidences.includes(excluded));
             });
             
         case 'Insanity':
             return GHOSTS.filter(ghost => {
                 const challengingGhosts = ['deogen', 'moroi', 'myling', 'twins', 'obake'];
-                return challengingGhosts.includes(ghost.id);
+                return challengingGhosts.includes(ghost.id) && excludedEvidences.every(excluded => !ghost.evidences.includes(excluded));
             });
             
         default:
-            return filterGhostsByEvidences(selectedEvidences);
+            return filterGhostsByEvidences(selectedEvidences, excludedEvidences);
     }
 }
 
@@ -413,6 +419,70 @@ const EVIDENCE_ICONS = {
     'Ultraviolet': 'UV.svg'
 };
 
+// Speed audio mapping
+const SPEED_AUDIO_MAP = {
+    '0.4': '0.4speed.mp3',
+    '0.5': '1speed.mp3',
+    '0.6': '1speed.mp3',
+    '0.7': '1speed.mp3',
+    '0.8': '1speed.mp3',
+    '0.9': '1speed.mp3',
+    '1.0': '1speed.mp3',
+    '1.1': '1.4speed.mp3',
+    '1.2': '1.4speed.mp3',
+    '1.3': '1.4speed.mp3',
+    '1.4': '1.4speed.mp3',
+    '1.5': '1.5speed.mp3',
+    '1.6': '1.7speed.mp3',
+    '1.7': '1.7speed.mp3',
+    '1.8': '1.9speed.mp3',
+    '1.9': '1.9speed.mp3',
+    '2.0': '2.25speed.mp3',
+    '2.1': '2.25speed.mp3',
+    '2.2': '2.25speed.mp3',
+    '2.3': '2.25speed.mp3',
+    '2.4': '2.5speed.mp3',
+    '2.5': '2.5speed.mp3',
+    '2.6': '2.7speed.mp3',
+    '2.7': '2.7speed.mp3',
+    '2.8': '2.75speed.mp3',
+    '2.9': '3speed.mp3',
+    '3.0': '3speed.mp3',
+    '3.1': '3speed.mp3',
+    '3.2': '3speed.mp3',
+    '3.3': '3speed.mp3',
+    '3.4': '3speed.mp3',
+    '3.5': '3speed.mp3',
+    '3.6': '3speed.mp3',
+    '3.7': '3.71speed.mp3',
+    '3.8': '3.71speed.mp3',
+    '3.9': '3.71speed.mp3',
+    '4.0': '3.71speed.mp3'
+};
+
+// Utility function to extract base speed and map to audio file
+function getSpeedAudioFile(speedString) {
+    if (!speedString) return '1.7speed.mp3';
+    
+    // Extract the first speed number from strings like "1.7 m/s -> 3.0 m/s when chasing"
+    const speedMatch = speedString.match(/(\d+\.?\d*)/);
+    if (!speedMatch) return '1.7speed.mp3';
+    
+    const baseSpeed = parseFloat(speedMatch[1]);
+    
+    // Find the closest available speed audio
+    for (let i = 0.4; i <= 4.0; i += 0.1) {
+        const roundedSpeed = (Math.round(i * 10) / 10).toFixed(1);
+        const diff = Math.abs(baseSpeed - parseFloat(roundedSpeed));
+        if (diff <= 0.05 && SPEED_AUDIO_MAP[roundedSpeed]) {
+            return SPEED_AUDIO_MAP[roundedSpeed];
+        }
+    }
+    
+    // Find exact match in mapping
+    return SPEED_AUDIO_MAP[baseSpeed.toFixed(1)] || '1.7speed.mp3';
+}
+
 // Export for use in app.js
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
@@ -420,10 +490,12 @@ if (typeof module !== 'undefined' && module.exports) {
         DIFFICULTIES,
         GHOSTS,
         EVIDENCE_ICONS,
+        SPEED_AUDIO_MAP,
         getMaxEvidencesForDifficulty,
         getEligibleEvidencesForDifficulty,
         filterGhostsByEvidences,
         getGhostMatchScore,
-        getDifficultySpecificGhosts
+        getDifficultySpecificGhosts,
+        getSpeedAudioFile
     };
 }

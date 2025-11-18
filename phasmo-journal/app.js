@@ -94,8 +94,8 @@ function updateThemePreview() {
 function updateState() {
     const maxEvidence = getMaxEvidencesForDifficulty(state.selectedDifficulty);
     
-    // Filter ghosts
-    let filtered = filterGhostsByEvidences(state.selectedEvidences);
+    // Filter ghosts by selected and excluded evidences
+    let filtered = filterGhostsByEvidences(state.selectedEvidences, Array.from(state.evidenceExcluded));
     filtered = filtered.filter(ghost => !state.excludedGhosts.has(ghost.id));
     
     state.filteredGhosts = filtered;
@@ -185,25 +185,88 @@ function createGhostCard(ghost) {
     const matchScore = getGhostMatchScore(ghost, state.selectedEvidences);
     
     card.innerHTML = `
-        <div class="ghost-header">
-            <h3 class="ghost-name">${ghost.name}</h3>
-            <span class="ghost-difficulty">${matchScore.score}% match</span>
-        </div>
-        <div class="ghost-evidences">
-            ${ghost.evidences.map(evidence => `
-                <span class="evidence-tag">
-                    <img src="ASSETS/svg/${EVIDENCE_ICONS[evidence] || 'file.svg'}" alt="" class="evidence-icon">
-                    <span>${evidence}</span>
-                </span>
-            `).join('')}
-        </div>
-        <div class="ghost-stats">
-            <span>${ghost.speed || '1.7 m/s'}</span>
-            <span>${ghost.huntThreshold || '50%'}</span>
-        </div>
-        <div class="ghost-actions">
-            <button class="action-confirm" data-ghost="${ghost.id}">✓ Confirm</button>
-            <button class="action-exclude" data-ghost="${ghost.id}">✗ Exclude</button>
+        <div class="ghost-content">
+            <div class="ghost-left">
+                <div class="ghost-header">
+                    <h3 class="ghost-name">${ghost.name}</h3>
+                    <span class="ghost-difficulty">${matchScore.score}% match</span>
+                </div>
+                <div class="ghost-evidences">
+                    ${ghost.evidences.map(evidence => `
+                        <span class="evidence-tag">
+                            <img src="ASSETS/svg/${EVIDENCE_ICONS[evidence] || 'file.svg'}" alt="" class="evidence-icon">
+                            <span>${evidence}</span>
+                        </span>
+                    `).join('')}
+                </div>
+                <div class="ghost-stats">
+                    <span class="speed-display">
+                        <span class="speed-text">${ghost.speed || '1.7 m/s'}</span>
+                        <button class="speed-preview-btn" data-ghost="${ghost.id}" data-speed-file="${getSpeedAudioFile(ghost.speed)}" title="Preview Speed Sound">
+                            🔊
+                        </button>
+                    </span>
+                    <span>${ghost.huntThreshold || '50%'}</span>
+                </div>
+                <div class="ghost-actions">
+                    <button class="action-confirm" data-ghost="${ghost.id}">✓ Confirm</button>
+                    <button class="action-exclude" data-ghost="${ghost.id}">✕ Exclude</button>
+                </div>
+            </div>
+            <div class="ghost-right">
+                <div class="ghost-details-scroll">
+                    ${ghost.strengths && ghost.strengths.length > 0 && ghost.strengths[0] !== "None" ? `
+                        <div class="detail-section">
+                            <h4>Strengths</h4>
+                            <ul>
+                                ${ghost.strengths.map(strength => `<li>${strength}</li>`).join('')}
+                            </ul>
+                        </div>
+                    ` : ''}
+                    
+                    ${ghost.weaknesses && ghost.weaknesses.length > 0 ? `
+                        <div class="detail-section">
+                            <h4>Weaknesses</h4>
+                            <ul>
+                                ${ghost.weaknesses.map(weakness => `<li>${weakness}</li>`).join('')}
+                            </ul>
+                        </div>
+                    ` : ''}
+                    
+                    ${ghost.abilities && ghost.abilities.length > 0 ? `
+                        <div class="detail-section">
+                            <h4>Abilities</h4>
+                            <ul>
+                                ${ghost.abilities.map(ability => `<li>${ability}</li>`).join('')}
+                            </ul>
+                        </div>
+                    ` : ''}
+                    
+                    ${ghost.tests && ghost.tests.length > 0 ? `
+                        <div class="detail-section">
+                            <h4>Tests</h4>
+                            <ul>
+                                ${ghost.tests.map(test => `<li>${test}</li>`).join('')}
+                            </ul>
+                        </div>
+                    ` : ''}
+                    
+                    ${ghost.notes ? `
+                        <div class="detail-section">
+                            <h4>Notes</h4>
+                            <p>${ghost.notes}</p>
+                        </div>
+                    ` : ''}
+                    
+                    <div class="detail-section">
+                        <h4>Meta</h4>
+                        <div class="meta-grid">
+                            <div><strong>Speed:</strong> ${ghost.speed || '1.7 m/s'}</div>
+                            <div><strong>Hunt:</strong> ${ghost.huntThreshold || '50%'}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     `;
     
@@ -275,7 +338,12 @@ function showGhostModal(ghost) {
             ` : ''}
             
             <div class="ghost-meta">
-                <div><strong>Speed:</strong> ${ghost.speed || '1.7 m/s'}</div>
+                <div class="speed-display">
+                    <span><strong>Speed:</strong> ${ghost.speed || '1.7 m/s'}</span>
+                    <button class="speed-preview-btn" data-ghost="${ghost.id}" data-speed-file="${getSpeedAudioFile(ghost.speed)}" title="Preview Speed Sound">
+                        🔊
+                    </button>
+                </div>
                 <div><strong>Hunt Threshold:</strong> ${ghost.huntThreshold || '50%'}</div>
                 ${ghost.tests ? `<div><strong>Tests:</strong> ${ghost.tests.join(', ')}</div>` : ''}
             </div>
@@ -434,6 +502,69 @@ function initEventHandlers() {
         if (e.key === 'Escape') {
             closeGhostModal();
         }
+    });
+    
+    // Speed preview button events
+    document.addEventListener('click', (e) => {
+        if (e.target.classList.contains('speed-preview-btn')) {
+            const speedFile = e.target.dataset.speedFile;
+            const button = e.target;
+            previewSpeedSound(speedFile, button);
+        }
+    });
+}
+
+function previewSpeedSound(speedFile, button) {
+    // Stop any currently playing audio
+    stopAllSpeedAudio();
+    
+    if (!speedFile) return;
+    
+    try {
+        const audio = new Audio(`ASSETS/speeds/${speedFile}`);
+        audio.volume = 0.3; // Set reasonable volume
+        
+        // Visual feedback
+        button.classList.add('playing');
+        button.title = 'Playing speed sound';
+        
+        // Audio event handlers
+        audio.addEventListener('ended', () => {
+            button.classList.remove('playing');
+            button.title = 'Preview Speed Sound';
+        });
+        
+        audio.addEventListener('error', () => {
+            button.classList.remove('playing');
+            button.title = 'Preview Speed Sound';
+            console.warn('Could not load speed audio:', speedFile);
+        });
+        
+        // Store audio reference for cleanup
+        button._audioRef = audio;
+        
+        // Play the audio
+        audio.play().catch(error => {
+            console.warn('Could not play speed audio:', error);
+            button.classList.remove('playing');
+            button.title = 'Preview Speed Sound';
+        });
+        
+    } catch (error) {
+        console.warn('Error creating speed audio:', error);
+    }
+}
+
+function stopAllSpeedAudio() {
+    // Stop all currently playing speed audio and remove visual states
+    const speedButtons = document.querySelectorAll('.speed-preview-btn');
+    speedButtons.forEach(button => {
+        if (button._audioRef) {
+            button._audioRef.pause();
+            button._audioRef = null;
+        }
+        button.classList.remove('playing');
+        button.title = 'Preview Speed Sound';
     });
 }
 
