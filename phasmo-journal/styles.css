@@ -1158,21 +1158,44 @@ body {
     }
 }
 
-/* New Ghost Card Design - properly sized */
+/* New Ghost Card Design - properly sized with crisp borders */
 .ghost-card {
-    background: rgba(var(--card), 0.25);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(var(--border), 0.3);
-    border-radius: 0.75rem;
-    padding: 0.875rem;  /* slightly increased padding */
+    background: var(--card) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 12px !important;  /* crisp pixel value instead of rem */
+    padding: 14px !important;  /* crisp pixel value */
     cursor: pointer;
     transition: all 0.2s ease;
-    display: flex;
-    flex-direction: column;
-    gap: 0.625rem;  /* slightly increased spacing */
-    height: 135px;      /* 50% more than original 90px */
-    max-height: 135px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;  /* crisp pixel value */
+    height: 135px !important;      /* 50% more than original 90px - forced */
+    max-height: 135px !important;
+    min-height: 135px !important;  /* ensure minimum height */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+    overflow: visible !important; /* allow content to flow naturally */
+    /* Remove any blur effects that might cause blurry borders */
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    /* Ensure no other transforms affect the layout */
+    transform: none !important;
+    position: relative !important;
+    /* Force hardware acceleration for crisp rendering */
+    will-change: auto;
+    /* Additional border crispness */
+    border-style: solid !important;
+    border-width: 1px !important;
+    border-color: var(--border) !important;
+}
+
+/* Extra specific selector to override any JavaScript inline styles */
+#ghostsContainer .ghost-card,
+.ghost-grid .ghost-card {
+    height: 135px !important;
+    max-height: 135px !important;
+    min-height: 135px !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 12px !important;
 }
 
 .ghost-card:hover {

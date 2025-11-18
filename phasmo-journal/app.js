@@ -303,6 +303,16 @@ function createGhostCard(ghost) {
         </div>
     `;
     
+    // Force height and border styling via JavaScript
+    card.style.height = '135px';
+    card.style.maxHeight = '135px';
+    card.style.minHeight = '135px';
+    card.style.border = '1px solid var(--border)';
+    card.style.borderRadius = '12px';
+    card.style.background = 'var(--card)';
+    card.style.backdropFilter = 'none';
+    card.style.webkitBackdropFilter = 'none';
+    
     card.addEventListener('click', (e) => {
         // Only open modal when clicking on ghost name
         if (e.target.classList.contains('ghost-name')) {
