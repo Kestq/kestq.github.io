@@ -1215,9 +1215,12 @@ body {
     box-sizing: border-box;
 }
 
-/* Remove conflicting grid layouts that cause overlapping */
+/* Remove conflicting grid layouts that cause overlapping - FIXED */
 .ghost-grid {
-    display: none !important;  /* Disable old grid that might conflict */
+    display: grid !important;  /* Enable the ghost grid properly */
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    padding: 1.5rem;
 }
 
 /* Ensure tab content stays within card bounds */
