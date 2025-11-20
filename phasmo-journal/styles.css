@@ -1271,7 +1271,7 @@ body {
 /* Ghost Header */
 .ghost-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     padding-bottom: 12px;
     border-bottom: 1px solid var(--border);
@@ -1286,6 +1286,7 @@ body {
     cursor: pointer;
     transition: color 0.2s;
     letter-spacing: 0.5px;
+    text-align: center;
 }
 
 .ghost-name:hover {
@@ -1293,15 +1294,7 @@ body {
 }
 
 .ghost-tag {
-    font-size: 0.75rem;
-    padding: 6px 12px;
-    border-radius: 20px;
-    background: rgba(139, 92, 246, 0.15);
-    border: 1px solid rgba(139, 92, 246, 0.3);
-    color: #c4b5fd;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    display: none;
 }
 
 /* Ghost Body - Two Column Layout */
@@ -1402,14 +1395,15 @@ body {
 }
 
 .ghost-speed-sound {
-    background: none;
+    background: var(--muted);
     border: 1px solid var(--border);
-    font-size: 1rem;
+    font-size: 0.75rem;
     cursor: pointer;
     padding: 4px 8px;
     border-radius: 6px;
     transition: all 0.2s;
     color: var(--muted-foreground);
+    font-weight: 600;
 }
 
 .ghost-speed-sound:hover {
@@ -1418,7 +1412,19 @@ body {
     color: #8b5cf6;
 }
 
-/* Evidence Row - Clean & Organized */
+.ghost-speed-sound.playing {
+    background: #10b981;
+    border-color: #10b981;
+    color: white;
+    animation: pulse 1s infinite;
+}
+
+/* Multiple speed buttons container */
+.ghost-speed-row .ghost-speed-sound + .ghost-speed-sound {
+    margin-left: 4px;
+}
+
+/* Evidence Row - Clean & Organized with Icons */
 .ghost-evidence-row {
     display: flex;
     flex-wrap: wrap;
@@ -1430,7 +1436,7 @@ body {
 .evidence-chip {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
+    gap: 6px;
     padding: 6px 12px;
     border-radius: 6px;
     font-size: 0.75rem;
@@ -1438,6 +1444,20 @@ body {
     border: 1px solid;
     flex-shrink: 0;
     white-space: nowrap;
+    transition: all 0.3s ease;
+}
+
+.evidence-chip img {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+}
+
+/* Glow effect when evidence is selected */
+.evidence-chip.selected {
+    box-shadow: 0 0 12px currentColor, 0 0 20px currentColor;
+    border-width: 2px;
+    transform: scale(1.05);
 }
 
 .ghost-card * {
