@@ -55,11 +55,13 @@
             padding: 16px;
             display: flex;
             flex-direction: column;
-            min-height: 300px; /* Reasonable minimum height */
+            min-height: 320px;
+            max-height: 400px;
             /* Remove any blur/transform effects that cause issues */
             backdrop-filter: none;
             transform: none;
             position: relative;
+            overflow: hidden;
         }
 
         .ghost-card:hover {
@@ -97,7 +99,8 @@
             display: flex;
             gap: 16px;
             flex: 1;
-            min-height: 0; /* Allow flex shrinking */
+            min-height: 0;
+            overflow: hidden;
         }
 
         /* LEFT SIDE - Ghost info */
