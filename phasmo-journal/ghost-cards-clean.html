@@ -189,8 +189,11 @@
             font-size: 0.875rem;
             line-height: 1.4;
             /* Prevent overflow issues */
-            overflow: hidden;
+            overflow-y: auto;
+            overflow-x: hidden;
             display: none;
+            max-height: 180px;
+            min-height: 120px;
         }
 
         .tab-content.active {
