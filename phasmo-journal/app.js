@@ -1036,7 +1036,7 @@ function getDetailedBehaviors(ghost) {
 
 function stopAllSpeedAudio() {
     // Stop all currently playing speed audio and remove visual states
-    const speedButtons = document.querySelectorAll('.speed-preview-btn');
+    const speedButtons = document.querySelectorAll('.speed-preview-btn, .ghost-speed-sound');
     speedButtons.forEach(button => {
         if (button._audioRef) {
             button._audioRef.pause();
