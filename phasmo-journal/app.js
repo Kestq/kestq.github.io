@@ -870,8 +870,6 @@ function previewSpeedSound(speedFile, button) {
         audio.addEventListener('error', () => {
             button.classList.remove('playing');
             button.title = 'Preview Speed Sound';
-
-function getDetailedBehaviors(ghost) {
     const behaviors = [];
     
     switch (ghost.id) {
